@@ -1,0 +1,1381 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Add Lead</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="shortcut icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="apple-touch-icon" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<style>
+		body 
+		{
+			background: #f7f9fc;
+		}
+	
+		.card 
+		{
+			border-radius: 16px;
+			box-shadow: 0 10px 24px rgba(0, 0, 0, .06);
+		}
+	
+		.section-title 
+		{
+			font-weight: 600;
+			color: #2b6cb0;
+		}
+	
+		.badge-pill 
+		{
+			cursor: pointer;
+		}
+	
+		#moreSection 
+		{
+			display: none;
+		}
+	
+		.fab 
+		{
+			position: fixed;
+			right: 20px;
+			bottom: 20px;
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #2b6cb0;
+			color: #fff;
+			box-shadow: 0 6px 18px rgba(0, 0, 0, .18);
+		}
+	
+		.fab:disabled 
+		{
+			opacity: .6;
+		}
+	
+		.list-chip 
+		{
+			display: flex;
+			gap: .2rem;
+			flex-wrap: wrap;
+		}
+	
+		.chip 
+		{
+			padding: .4rem .75rem;
+			border-radius: 20px;
+			border: 1px solid #dee2e6;
+		}
+	
+		.chip.active 
+		{
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #fff;
+			border-color: transparent;
+		}
+	
+		.form-control:disabled 
+		{
+			background: #eef2f7;
+		}
+	
+		.fab 
+		{
+			position: fixed;
+			right: 20px;
+			bottom: 20px;
+			width: 56px;
+			height: 56px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			color: white !important;
+			font-size: 1.5rem;
+			font-weight: bold;
+			border: none !important;
+			box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			cursor: pointer;
+			transition: all 0.2s;
+		}
+	
+		.fab:hover 
+		{
+			transform: translateY(-3px) !important;
+			box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+		}
+	
+		.fab:active 
+		{
+			transform: translateY(-1px) !important;
+		}
+	
+		.btn-primary 
+		{
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none;
+			color: white;
+			font-weight: 600;
+			transition: all 0.2s;
+		}
+	
+		.btn-primary:hover 
+		{
+			transform: translateY(-2px) !important;
+			box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: white;
+		}
+	
+		.btn-primary:active 
+		{
+			transform: translateY(0) !important;
+		}
+	
+		.btn-primary:disabled 
+		{
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+	
+		.back-button 
+		{
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 12px;
+			background: white;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			text-decoration: none;
+			color: #0066ff;
+			font-weight: 600;
+			font-size: 15px;
+			transition: all 0.2s;
+			margin-bottom: 16px;
+		}
+	
+		.back-button:hover 
+		{
+			background: #f0f5ff;
+			text-decoration: none;
+			color: #0066ff;
+			transform: translateX(-2px);
+		}
+	
+		.back-icon 
+		{
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			background: #d1d5db;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			color: white;
+		}
+	
+			.back-button:hover .back-icon 
+			{
+				background: #9ca3af;
+			}
+
+		@media (max-width: 767px) {
+			.container {
+				padding: 1rem;
+			}
+
+			.card {
+				padding: 1rem !important;
+			}
+
+			.section-title {
+				font-size: 1.2rem;
+			}
+
+			.back-button {
+				padding: 4px 8px;
+				font-size: 13px;
+				margin-bottom: 12px;
+			}
+
+			.back-icon {
+				width: 20px;
+				height: 20px;
+				font-size: 11px;
+			}
+
+			.fab {
+				width: 48px;
+				height: 48px;
+				font-size: 20px;
+			}
+
+			.input-group-append .btn {
+				padding: 6px 12px;
+			}
+
+			.chip {
+				padding: 0.3rem 0.5rem;
+				font-size: 0.8rem;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.section-title {
+				font-size: 1.1rem;
+			}
+
+			.card {
+				padding: 0.75rem !important;
+			}
+
+			.back-button {
+				padding: 3px 6px;
+				font-size: 12px;
+			}
+
+			.fab {
+				width: 44px;
+				height: 44px;
+				font-size: 18px;
+			}
+		}
+</style>
+</head>
+
+<body>
+	<div class="container py-4">
+		<div class="row justify-content-center">
+			<div class="col-12 col-lg-10">
+				<button class="back-button" onclick="goBack()">
+					<div class="back-icon">←</div>
+					<span>Back</span>
+				</button>
+				<div class="card p-4 p-md-5">
+					<h4 id="pageTitle" class="section-title mb-4">Add Lead</h4>
+					<div class="row">
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label>Location</label>
+								<div class="input-group">
+									<input id="etLocation" class="form-control" placeholder="Location" disabled />
+									<div class="input-group-append">
+										<button id="btnPickLocation" class="btn btn-outline-secondary" type="button" onclick="openMapPicker()">Pick</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label>Name of Organization</label>
+								<input id="etNameOfOrganization" class="form-control" placeholder="Organization" />
+							</div>
+						</div>
+						<div class="col-12 col-md-8">
+							<div class="form-group">
+								<label>Phone</label>
+								<div class="input-group">
+									<input id="etPhone" class="form-control" placeholder="Phone" inputmode="numeric" />
+									<div class="input-group-append">
+										<button id="btnPickContact" class="btn btn-outline-secondary" type="button">Contacts</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="form-group">
+								<label>Assignee</label>
+								<input id="tvAssignee" class="form-control" placeholder="Assign member" readonly onclick="openAssignee()" />
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label>Contact Person Name</label>
+								<input id="etContactPersonName" class="form-control" placeholder="Name" />
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="form-group">
+								<label>Note</label>
+								<input id="etNote" class="form-control" placeholder="Remarks" />
+							</div>
+						</div>
+					</div>
+					<div id="buyersCoachSection">
+						<h6 class="section-title mt-3">Buyers &amp; Coach</h6>
+						<small class="text-muted d-block mb-2">Contact can be an email id or a mobile number.</small>
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 1 Name</label>
+									<input id="etBuyer1Name" class="form-control" placeholder="Buyer 1 name" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 1 Contact</label>
+									<input id="etBuyer1Contact" class="form-control" placeholder="Email or mobile" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 2 Name</label>
+									<input id="etBuyer2Name" class="form-control" placeholder="Buyer 2 name" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 2 Contact</label>
+									<input id="etBuyer2Contact" class="form-control" placeholder="Email or mobile" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 3 Name</label>
+									<input id="etBuyer3Name" class="form-control" placeholder="Buyer 3 name" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Buyer 3 Contact</label>
+									<input id="etBuyer3Contact" class="form-control" placeholder="Email or mobile" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Coach Name</label>
+									<input id="etCoachName" class="form-control" placeholder="Coach name" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Coach Contact</label>
+									<input id="etCoachContact" class="form-control" placeholder="Email or mobile" />
+								</div>
+							</div>
+						</div>
+
+						</div><!-- /buyersCoachSection -->
+
+						<div class="d-flex align-items-center mt-2">
+						<button id="btnAddMore" class="btn btn-link p-0 mr-3" onclick="showMoreDetails()">Add more details</button>
+						<button id="btnHideMore" class="btn btn-link p-0 text-danger" style="display:none" onclick="hideMoreDetails()">Hide more
+							details</button>
+					</div>
+					<div id="moreSection" class="mt-3">
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>School Type</label>
+									<select id="spSchoolType" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Unit Size</label>
+									<div id="unitTypeChips" class="list-chip"></div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Designation</label>
+									<input id="etContactPersonDesignation" class="form-control" placeholder="Designation" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Email</label>
+									<input id="etContactPersonEmail" type="email" class="form-control" placeholder="Email" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Source</label>
+									<select id="spSource" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Source Details</label>
+									<input id="etSourceDetails" class="form-control" placeholder="Source details" />
+								</div>
+							</div>
+						</div>
+						<h6 class="section-title mt-3">Financial Details</h6>
+						<div class="row">
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Quotation Date & Time</label>
+									<input id="tvQuotationDate" class="form-control" placeholder="Pick date & time" readonly onclick="pickDateTime('tvQuotationDate', 'quotation')" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Conversion Date & Time</label>
+									<input id="tvConversionDate" class="form-control" placeholder="Pick date & time" readonly onclick="pickDateTime('tvConversionDate', 'conversion')" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Quotation Stage</label>
+									<div class="list-chip">
+										<span class="chip" data-stage="Before Demo" id="chipBefore" onclick="selectStage('Before Demo', this)">Before Demo</span>
+										<span class="chip" data-stage="After Demo" id="chipAfter" onclick="selectStage('After Demo', this)">After Demo</span>
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Payment Method</label>
+									<select id="spPaymentMethod" class="form-control" onchange="onPaymentMethodChanged()"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label id="lblCost">₹/Student/Month or Lumpsum</label>
+									<input id="etCostStudentMonth" class="form-control" inputmode="numeric" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Free Months</label>
+									<select id="spFreeMonths" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-12 col-md-4">
+								<div class="form-group">
+									<label>Installation Charge</label>
+									<input id="etInstallationCharge" class="form-control" inputmode="numeric" />
+								</div>
+							</div>
+							<div class="col-12 col-md-4">
+								<div class="form-group">
+									<label>SMS Charge</label>
+									<input id="etSMSCharge" class="form-control" inputmode="decimal" />
+								</div>
+							</div>
+							<div class="col-12 col-md-4">
+								<div class="form-group">
+									<label>Free SMS Count</label>
+									<input id="etFreeSMSCount" class="form-control" inputmode="numeric" />
+								</div>
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="form-group">
+									<label>Negotiated Amount</label>
+									<input id="etNegotiatedAmount" class="form-control" inputmode="numeric" />
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="mt-4">
+							<button id="btnSaveLead" type="button" class="btn btn-primary btn-block btn-lg" onclick="saveLead()">Add Lead</button>
+						</div>
+						<div id="msg" class="mt-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<button id="fabAddLead" class="fab" onclick="saveLead()">→</button>
+
+	<div class="modal fade" id="assigneeModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Select Assignee</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<input id="assigneeSearch" class="form-control mb-2" placeholder="Search" />
+					<ul id="assigneeList" class="list-group"></ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" id="btnSelectAssignee" class="btn btn-primary" onclick="selectAssignee()">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="mapPickerModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl" role="document" style="max-width:96vw;">
+			<div class="modal-content" style="height:86vh;">
+				<div class="modal-header">
+					<h5 class="modal-title">Lead Location</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+				</div>
+				<div class="modal-body p-0" style="height:calc(86vh - 120px);">
+					<div class="p-2">
+						<input id="mapSearchBox" class="form-control" placeholder="Tap to search lead location" />
+					</div>
+					<div id="mapCanvas" style="width:100%; height:calc(100% - 62px);"></div>
+				</div>
+				<div class="modal-footer">
+					<div class="text-left mr-auto">
+						<small id="pickedAddress" class="text-muted d-block"></small>
+						<small id="pickedLatLng" class="text-muted"></small>
+					</div>
+					<button type="button" id="btnUseThisLocation" class="btn btn-primary" onclick="useThisLocation()">Add Lead Location</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCNUwh7B54O-W_POxPe9Uqer_UOo279Wj8&libraries=places"></script>
+
+	<script>
+		"use strict";
+		const BASE_URL = "https://management.trakkerz.com/api/";
+		// const BASE_URL = "http://localhost:51450/api/";
+
+		// Buyers + coach. Requires the new BO_ADD_LEAD columns (run AddBuyerColumns.sql) on the
+		// backend DB. Enabled end-to-end. Set to false only if you need to test without those columns.
+		const BUYERS_COACH_ENABLED = true;
+		const ENDPOINTS =
+		{
+			performAdd: "Actions/PerformAction",
+			editLeadDetails: "Actions/EditLeadDetails",
+			fetchLeadById: "Actions/FetchLeadDetailsById",
+			getMembersByGroup: "Members/GetByGroupId",
+			uploadImage: "Files/UploadImage"
+		};
+
+		// When a leadId is present in the URL (e.g. add_lead_html_js_bootstrap.html?leadId=123)
+		// the page works in EDIT mode: it pre-fills the lead and saves via EditLeadDetails.
+		function getQueryParam(name)
+		{
+			let m = new RegExp("[?&]" + name + "=([^&]*)").exec(window.location.search);
+			return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : "";
+		}
+		let editLeadId = parseInt(getQueryParam("leadId"), 10) || 0;
+
+		// Carry the group context back to the leads list so its header stays consistent.
+		function leadsListUrl()
+		{
+			let g = getQueryParam("group");
+			return g ? ("leads.html?group=" + encodeURIComponent(g)) : "leads.html";
+		}
+		let schoolTypes = ["Pre School", "School", "High School", "College", "Activity Center"];
+		let unitTypes = ["Under 100", "100-500", "500-1000", "Above 1000"];
+		let paymentMethods = ["Annual Upfront", "Semi Annual-Advance", "Quarterly Advance", "Monthly Advance"];
+		let sources = ["Referral", "Inbound", "Outbound", "Event", "Other"];
+		let freeMonthsOptions = ["0", "1", "2", "3", "4", "5", "6", "9", "12"];
+		let selectedUnitType = "";
+		let selectedPaymentType = paymentMethods[0];
+		let selectedStage = "";
+		let selectedAssignee = { index: -1, name: "", personId: "" };
+		let groupId = localStorage.getItem('USER_GROUP_ID') || "1";
+		let organizationId = 1;
+		let personId = localStorage.getItem('USER_PERSON_ID') || "1";
+		let creatorName = (localStorage.getItem('USER_FIRST_NAME') || '') + ' ' + (localStorage.getItem('USER_LAST_NAME') || '');
+		let addressString = "";
+		let localNameHint = "";
+		let city = "";
+		let state = "";
+		let country = "";
+		let latitude = 0.0;
+		let longitude = 0.0;
+		let imageId = "";
+		let quotationDateForApi = "";
+		let conversionDateForApi = "";
+		let isSubmitting = false;
+
+		function setMsg(text, type) 
+		{
+			let m = document.getElementById("msg");
+			if (!text) 
+			{
+				m.className = "";
+				m.textContent = "";
+				return;
+			}
+			m.className = "alert alert-" + (type || "info");
+			m.textContent = text;
+		}
+
+		function createJSON(params, values) 
+		{
+			let pairs = [];
+			for (let i = 0; i < params.length; i++) 
+			{
+				pairs.push(encodeURIComponent(params[i]) + "=" + encodeURIComponent(values[i] == null ? "" : values[i]));
+			}
+			return pairs.join("&");
+		}
+
+		function promisingAjaxCall(url, method, dataString, contentType) 
+		{
+			return fetch(url,
+			{
+				method: method,
+				headers:
+				{
+					"Content-Type": contentType || "application/x-www-form-urlencoded"
+				},
+				body: dataString
+			})
+			.then(function (r) 
+			{
+				if (!r.ok) 
+				{
+					throw new Error("HTTP " + r.status);
+				}
+				return r.text();
+			})
+			.then(function (txt) 
+			{
+				try 
+				{
+					return JSON.parse(txt);
+				}
+				catch (e) 
+				{
+					return { isOk: false, message: "Invalid JSON" };
+				}
+			});
+		}
+
+		function fillSelect(id, arr) 
+		{
+			let el = document.getElementById(id);
+			el.innerHTML = "";
+			for (let i = 0; i < arr.length; i++) 
+			{
+				let opt = document.createElement("option");
+				opt.value = arr[i];
+				opt.textContent = arr[i];
+				el.appendChild(opt);
+			}
+		}
+
+		function buildChips() 
+		{
+			let wrap = document.getElementById("unitTypeChips");
+			wrap.innerHTML = "";
+
+			for (let i = 0; i < unitTypes.length; i++) 
+			{
+				let span = document.createElement("span");
+				span.className = "chip";
+				span.textContent = unitTypes[i];
+				span.dataset.val = unitTypes[i];
+				span.addEventListener("click", function () 
+				{
+					let chips = wrap.querySelectorAll(".chip");
+					for (let j = 0; j < chips.length; j++) 
+					{
+						chips[j].classList.remove("active");
+					}
+					span.classList.add("active");
+					selectedUnitType = span.dataset.val;
+				});
+				wrap.appendChild(span);
+			}
+		}
+
+		function openAssignee() 
+		{
+			const currentGroupId = localStorage.getItem('USER_GROUP_ID') || groupId;
+			let url = BASE_URL + ENDPOINTS.getMembersByGroup;
+			let params = ["GroupId"];
+			let values = [currentGroupId];
+			let dataString = createJSON(params, values);
+			// setMsg("Loading members...");
+			promisingAjaxCall(url, "POST", dataString, "application/x-www-form-urlencoded")
+				.then(function (res) 
+				{
+					setMsg("");
+					let list = Array.isArray(res) ? res : (res.responseObject || []);
+					let ul = document.getElementById("assigneeList");
+					ul.innerHTML = "";
+					for (let i = 0; i < list.length; i++) 
+					{
+						let li = document.createElement("li");
+						li.className = "list-group-item d-flex justify-content-between align-items-center";
+						let fullName = (list[i].firstName || "") + " " + (list[i].lastName || "");
+						li.textContent = fullName.trim();
+						li.dataset.index = i;
+						li.addEventListener("click", function () 
+						{
+							let items = ul.querySelectorAll(".list-group-item");
+							for (let j = 0; j < items.length; j++) 
+							{
+								items[j].classList.remove("active");
+							}
+							li.classList.add("active");
+							selectedAssignee.index = i;
+							selectedAssignee.name = fullName.trim();
+							selectedAssignee.personId = list[i].personId || "";
+						});
+						ul.appendChild(li);
+					}
+
+					$("#assigneeModal").modal("show");
+					document.getElementById("assigneeSearch").oninput = function () 
+					{
+						let q = this.value.toLowerCase();
+						let items = ul.querySelectorAll(".list-group-item");
+						for (let j = 0; j < items.length; j++) 
+						{
+							let t = items[j].textContent.toLowerCase();
+							items[j].style.display = t.indexOf(q) >= 0 ? "block" : "none";
+						}
+					};
+				})
+				.catch(function (err) 
+				{
+					setMsg("Error: " + err.message, "danger");
+				});
+		}
+
+		const pickDateTime = (inputId, apiHolder) => 
+		{
+			const d = new Date();
+			const dateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+			const timeStr = `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+			const nice = `${String(d.getDate()).padStart(2, "0")}-${String(d.getMonth() + 1).padStart(2, "0")}-${d.getFullYear()} ${(d.getHours() % 12) || 12}:${String(d.getMinutes()).padStart(2, "0")} ${d.getHours() < 12 ? "AM" : "PM"}`;
+			document.getElementById(inputId).value = nice;
+
+			if (apiHolder === "quotation") 
+			{
+				quotationDateForApi = `${dateStr} ${timeStr}`;
+			} 
+			else 
+			{
+				conversionDateForApi = `${dateStr} ${timeStr}`;
+			}
+		};
+
+		function isValidPhone(phone) 
+		{
+			if (!phone) return true;
+			if (/^[0-9]{10,13}$/.test(phone)) return true;
+			return false;
+		}
+
+		function onPaymentMethodChanged() 
+		{
+			selectedPaymentType = document.getElementById("spPaymentMethod").value;
+			let lbl = document.getElementById("lblCost");
+			let cost = document.getElementById("etCostStudentMonth");
+
+			if (selectedPaymentType === paymentMethods[0]) 
+			{
+				lbl.textContent = "₹/Student/Month";
+				cost.placeholder = "Per student per month";
+			}
+			else 
+			{
+				lbl.textContent = "Lumpsum";
+				cost.placeholder = "Total lumpsum amount";
+			}
+		}
+
+		const addLead = () => 
+		{
+			if (isSubmitting) return;
+
+			let nameOfOrganization = document.getElementById("etNameOfOrganization").value.trim();
+			let phone = document.getElementById("etPhone").value.trim();
+			let contactPersonName = document.getElementById("etContactPersonName").value.trim();
+			let note = document.getElementById("etNote").value.trim();
+
+			if (!nameOfOrganization) 
+			{
+				setMsg("Please enter organization name", "warning");
+				return;
+			}
+
+			if (nameOfOrganization.includes("/")) 
+			{
+				setMsg("Organization name should not contain /", "warning");
+				return;
+			}
+
+			if (!contactPersonName) 
+			{
+				setMsg("Please enter contact person name", "warning");
+				return;
+			}
+
+			if (!note) 
+			{
+				setMsg("Please enter some remarks", "warning");
+				return;
+			}
+
+			if (!isValidPhone(phone)) 
+			{
+				setMsg("Please enter valid phone number", "warning");
+				return;
+			}
+
+			let email = document.getElementById("etContactPersonEmail").value.trim();
+			if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) 
+			{
+				setMsg("Please enter valid email", "warning");
+				return;
+			}
+
+			isSubmitting = true;
+			document.getElementById("fabAddLead").disabled = true;
+
+			let source = document.getElementById("spSource").value;
+			let sourceDetails = document.getElementById("etSourceDetails").value.trim();
+			let designation = document.getElementById("etContactPersonDesignation").value.trim();
+			let costStudentMonth = document.getElementById("etCostStudentMonth").value.trim();
+			let installationCharge = document.getElementById("etInstallationCharge").value.trim();
+			let sMSCharge = document.getElementById("etSMSCharge").value.trim();
+			let freeSMSCount = document.getElementById("etFreeSMSCount").value.trim();
+			let freeMonths = document.getElementById("spFreeMonths").value;
+			let negotiatedAmount = document.getElementById("etNegotiatedAmount").value.trim();
+			let typeOfSchool = document.getElementById("spSchoolType").value;
+			let typeOfPayment = document.getElementById("spPaymentMethod").value;
+			let responsiblePersonId = selectedAssignee.personId || personId;
+
+			let today = new Date();
+			let y = today.getFullYear();
+			let m = String(today.getMonth() + 1).padStart(2, "0");
+			let d = String(today.getDate()).padStart(2, "0");
+			let currentDate = `${y}-${m}-${d}`;
+
+			// Get current groupId and personId from localStorage
+			const currentGroupId = localStorage.getItem('USER_GROUP_ID') || groupId;
+			const currentPersonId = localStorage.getItem('USER_PERSON_ID') || personId;
+			
+			let baseParams = ["ActionId", "OrganizationId", "GroupId", "PersonId", "LeadId"];
+			let baseValues = [1, 1, parseInt(currentGroupId, 10), parseInt(currentPersonId, 10), 0];
+
+			let features = [];
+
+			let pushFeature = (n, v) => 
+			{
+				features.push({ BOName: "BO_Add_Lead", FeatureName: n, FeatureValue: String(v || "") });
+			};
+
+			let maybePush = (n, v) => 
+			{
+				if (v !== undefined && v !== null && String(v).trim() !== "") pushFeature(n, v);
+			};
+
+			pushFeature("Lead", nameOfOrganization);
+			pushFeature("School_Name", nameOfOrganization);
+			pushFeature("School_Type", typeOfSchool);
+			pushFeature("No_Of_Students", selectedUnitType);
+			pushFeature("School_Contact_Person", contactPersonName);
+			pushFeature("Designation", designation);
+			pushFeature("Contact_Number", phone);
+			pushFeature("Email_ID", email);
+			maybePush("State", state);
+			maybePush("City", city);
+			maybePush("Country", country);
+			pushFeature("Creation_Date", currentDate);
+			pushFeature("Responsible_Person", responsiblePersonId);
+			pushFeature("Source", source);
+			pushFeature("Source_Details", sourceDetails);
+			pushFeature("SPEND_Status", "S");
+			maybePush("Quoted_by", creatorName);
+			pushFeature("Quotation_Date", quotationDateForApi);
+			pushFeature("Quotation_Stage", selectedStage);
+
+			if (selectedPaymentType === paymentMethods[0]) 
+			{
+				pushFeature("RsStudentPerMonth", costStudentMonth);
+				pushFeature("Lumpsum_Amount", "0");
+			}
+			else 
+			{
+				pushFeature("RsStudentPerMonth", "0");
+				pushFeature("Lumpsum_Amount", costStudentMonth);
+			}
+
+			pushFeature("Installation_Charge", installationCharge);
+			pushFeature("SMS_Charge", sMSCharge);
+			pushFeature("SMS_Free", freeSMSCount);
+			pushFeature("Months_Free", freeMonths);
+			pushFeature("Payment_Terms", typeOfPayment);
+			pushFeature("Negotiated_Amount", negotiatedAmount);
+			pushFeature("Conversion_Date", conversionDateForApi);
+			pushFeature("OI", "0");
+			pushFeature("Image", imageId);
+			pushFeature("Next_Appointment_Date", "");
+			pushFeature("Remarks", note);
+			pushFeature("Address", addressString);
+			pushFeature("Local_Address", localNameHint);
+			pushFeature("Latitude", String(latitude));
+			pushFeature("Longitude", String(longitude));
+			maybePush("Lead_Creator", creatorName);
+
+			// 3 buyers + coach (each: name + contact = email or mobile)
+			if (BUYERS_COACH_ENABLED)
+			{
+				maybePush("Buyer1_Name", document.getElementById("etBuyer1Name").value.trim());
+				maybePush("Buyer1_Contact", document.getElementById("etBuyer1Contact").value.trim());
+				maybePush("Buyer2_Name", document.getElementById("etBuyer2Name").value.trim());
+				maybePush("Buyer2_Contact", document.getElementById("etBuyer2Contact").value.trim());
+				maybePush("Buyer3_Name", document.getElementById("etBuyer3Name").value.trim());
+				maybePush("Buyer3_Contact", document.getElementById("etBuyer3Contact").value.trim());
+				maybePush("Coach_Name", document.getElementById("etCoachName").value.trim());
+				maybePush("Coach_Contact", document.getElementById("etCoachContact").value.trim());
+			}
+
+			let params = baseParams.slice();
+			let values = baseValues.slice();
+
+			for (let i = 0; i < features.length; i++) 
+			{
+				let f = features[i];
+				params.push(`ListofFeatures[${i}].BOName`); values.push(f.BOName);
+				params.push(`ListofFeatures[${i}].FeatureName`); values.push(f.FeatureName);
+				params.push(`ListofFeatures[${i}].FeatureValue`); values.push(f.FeatureValue);
+			}
+
+			let url = BASE_URL + ENDPOINTS.performAdd;
+
+			let dataString = createJSON(params, values);
+
+			setMsg("Saving lead...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/x-www-form-urlencoded").then((res) => 
+			{
+				if (res && (res.isOk === true || res.IsOk === true)) 
+				{
+					setMsg("Lead added successfully", "success");
+					setTimeout(() =>
+					{
+						window.location.href = leadsListUrl();
+					}, 1500);
+				}
+				else 
+				{
+					setMsg((res && (res.message || res.Message)) || "Failed to add lead", "danger");
+					document.getElementById("fabAddLead").disabled = false;
+					isSubmitting = false;
+				}
+			})
+			.catch((err) => 
+			{
+				setMsg(`Error: ${err.message}`, "danger");
+				document.getElementById("fabAddLead").disabled = false;
+				isSubmitting = false;
+			});
+		};
+
+
+		let map;
+		let marker;
+		let geocoder;
+		let placeSearch;
+		let tempPick =
+		{
+			address: "",
+			lat: null,
+			lng: null
+		};
+
+		function openMapPicker() 
+		{
+			$("#mapPickerModal").modal("show");
+			setTimeout(initMapIfNeeded, 150);
+		}
+
+		function initMapIfNeeded() 
+		{
+			if (map) 
+			{
+				google.maps.event.trigger(map, "resize");
+				return;
+			}
+
+			geocoder = new google.maps.Geocoder();
+
+			let startLat = latitude || 22.5726;
+			let startLng = longitude || 88.3639;
+
+			map = new google.maps.Map(document.getElementById("mapCanvas"),
+			{
+				center: 
+				{ 
+					lat: startLat, lng: startLng 
+				},
+				zoom: 15,
+				mapTypeControl: false,
+				streetViewControl: false,
+				fullscreenControl: false
+			});
+
+			marker = new google.maps.Marker(
+			{
+				position: { lat: startLat, lng: startLng },
+				map: map,
+				draggable: true
+			});
+
+			google.maps.event.addListener(marker, "dragend", function () 
+			{
+				let p = marker.getPosition();
+				updateTempPick(p.lat(), p.lng());
+			});
+
+			map.addListener("click", function (e) 
+			{
+				marker.setPosition(e.latLng);
+				updateTempPick(e.latLng.lat(), e.latLng.lng());
+			});
+
+			let input = document.getElementById("mapSearchBox");
+			placeSearch = new google.maps.places.SearchBox(input);
+			map.addListener("bounds_changed", function () 
+			{
+				placeSearch.setBounds(map.getBounds());
+			});
+
+			placeSearch.addListener("places_changed", function () 
+			{
+				let places = placeSearch.getPlaces();
+				if (!places || places.length === 0) return;
+				let p = places[0];
+				if (!p.geometry || !p.geometry.location) return;
+				map.panTo(p.geometry.location);
+				map.setZoom(17);
+				marker.setPosition(p.geometry.location);
+				updateTempPick(p.geometry.location.lat(), p.geometry.location.lng(), p.formatted_address);
+			});
+
+			updateTempPick(startLat, startLng);
+		}
+
+		function updateTempPick(lat, lng, presetAddress) 
+		{
+			tempPick.lat = lat;
+			tempPick.lng = lng;
+
+			if (presetAddress && presetAddress.length > 0) 
+			{
+				tempPick.address = presetAddress;
+				renderPickedLabels();
+				return;
+			}
+
+			geocoder.geocode({ location: { lat: lat, lng: lng } }, function (results, status) 
+			{
+				if (status === "OK" && results && results.length > 0) 
+				{
+					tempPick.address = results[0].formatted_address || "";
+				}
+				else 
+				{
+					tempPick.address = "";
+				}
+				renderPickedLabels();
+			});
+		}
+
+		function renderPickedLabels() 
+		{
+			document.getElementById("pickedAddress").textContent = tempPick.address || "";
+			document.getElementById("pickedLatLng").textContent = (tempPick.lat && tempPick.lng) ? (tempPick.lat.toFixed(6) + ", " + tempPick.lng.toFixed(6)) : "";
+		}
+
+		// Wrapper functions for inline handlers
+		const selectStage = (stage, element) => 
+		{
+			selectedStage = stage;
+			document.getElementById("chipBefore").classList.remove("active");
+			document.getElementById("chipAfter").classList.remove("active");
+			element.classList.add("active");
+		};
+
+		const showMoreDetails = () => 
+		{
+			document.getElementById("moreSection").style.display = "block";
+			document.getElementById("btnAddMore").style.display = "none";
+			document.getElementById("btnHideMore").style.display = "inline-block";
+		};
+
+		const hideMoreDetails = () => 
+		{
+			document.getElementById("moreSection").style.display = "none";
+			document.getElementById("btnHideMore").style.display = "none";
+			document.getElementById("btnAddMore").style.display = "inline-block";
+		};
+
+		const selectAssignee = () => 
+		{
+			if (selectedAssignee.index < 0) { return; }
+			document.getElementById("tvAssignee").value = selectedAssignee.name;
+			$("#assigneeModal").modal("hide");
+		};
+
+		const useThisLocation = () => 
+		{
+			addressString = tempPick.address || "";
+			latitude = tempPick.lat || 0.0;
+			longitude = tempPick.lng || 0.0;
+			document.getElementById("etLocation").value = addressString || (latitude + ", " + longitude);
+			$("#mapPickerModal").modal("hide");
+		};
+
+		const init = () => 
+		{
+			fillSelect("spSchoolType", schoolTypes);
+			fillSelect("spPaymentMethod", paymentMethods);
+			fillSelect("spSource", sources);
+			fillSelect("spFreeMonths", freeMonthsOptions);
+			buildChips();
+			onPaymentMethodChanged();
+
+			if (!BUYERS_COACH_ENABLED)
+			{
+				let bc = document.getElementById("buyersCoachSection");
+				if (bc) { bc.style.display = "none"; }
+			}
+
+			if (editLeadId > 0)
+			{
+				document.getElementById("pageTitle").textContent = "Edit Lead";
+				document.title = "Edit Lead";
+				document.getElementById("btnSaveLead").textContent = "Update Lead";
+				showMoreDetails();
+				loadLeadForEdit();
+			}
+		};
+
+		const goBack = () =>
+		{
+			window.location.href = leadsListUrl();
+		};
+
+		// ============================================================================
+		// NEW FUNCTIONS (Edit Lead + buyers/coach + financial pre-fill) - Subham
+		// Grouped here at the end of the file for easier review. Modifications to the
+		// existing add-lead code remain in place above.
+		// ============================================================================
+
+		// Dispatcher used by the floating action button / Save button:
+		// edit when a leadId is present in the URL, otherwise add.
+		const saveLead = () =>
+		{
+			if (editLeadId > 0) { editLead(); } else { addLead(); }
+		};
+
+		function setSelectValue(id, val)
+		{
+			let el = document.getElementById(id);
+			if (!el || val == null || val === "") return;
+			let found = false;
+			for (let i = 0; i < el.options.length; i++) { if (el.options[i].value === val) { found = true; break; } }
+			if (!found) { let opt = document.createElement("option"); opt.value = val; opt.textContent = val; el.appendChild(opt); }
+			el.value = val;
+		}
+
+		function selectUnitChipByValue(val)
+		{
+			selectedUnitType = val;
+			let chips = document.querySelectorAll("#unitTypeChips .chip");
+			for (let i = 0; i < chips.length; i++)
+			{
+				if (chips[i].dataset.val === val) { chips[i].classList.add("active"); }
+				else { chips[i].classList.remove("active"); }
+			}
+		}
+
+		// Pre-fill the form from an existing lead (edit mode).
+		const loadLeadForEdit = () =>
+		{
+			let url = BASE_URL + ENDPOINTS.fetchLeadById;
+			let dataString = createJSON(["LeadId"], [editLeadId]);
+			setMsg("Loading lead...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/x-www-form-urlencoded").then((res) =>
+			{
+				let ok = res && (res.isOk === true || res.IsOk === true);
+				let o = res ? (res.responseObject || res.ResponseObject) : null;
+				if (!ok || !o)
+				{
+					setMsg((res && (res.message || res.Message)) || "Could not load lead details", "danger");
+					return;
+				}
+				setMsg("");
+
+				// API may return 'N/A' (ISNULL placeholder) for empty buyer/coach fields - show those as blank.
+				let g = (a, b) =>
+				{
+					let v = (o[a] != null ? o[a] : (o[b] != null ? o[b] : ""));
+					return (v === "N/A") ? "" : v;
+				};
+
+				document.getElementById("etNameOfOrganization").value = g("LeadName", "leadName");
+				document.getElementById("etPhone").value = g("ContactNumber", "contactNumber");
+				document.getElementById("etContactPersonName").value = g("SchoolContactPerson", "schoolContactPerson");
+				document.getElementById("etNote").value = g("Remarks", "remarks");
+				document.getElementById("etContactPersonDesignation").value = g("Designation", "designation");
+				document.getElementById("etContactPersonEmail").value = g("EmailId", "emailId");
+				document.getElementById("etSourceDetails").value = g("SourceDetails", "sourceDetails");
+				// Prefer the full ADDRESS column; fall back to the "city, country" field. Ignore a lone comma.
+				let loc = g("LocationAddress", "locationAddress") || g("Address", "address");
+				if (loc.replace(/[,\s]/g, "") === "") { loc = ""; }
+				document.getElementById("etLocation").value = loc;
+				addressString = loc;
+
+				setSelectValue("spSchoolType", g("SchoolType", "schoolType"));
+				setSelectValue("spSource", g("Source", "source"));
+				let nos = g("NoOfStudents", "noOfStudents");
+				if (nos) { selectUnitChipByValue(nos); }
+
+				// Financial details
+				let payTerms = g("PaymentTerms", "paymentTerms");
+				if (payTerms) { setSelectValue("spPaymentMethod", payTerms); onPaymentMethodChanged(); }
+				// Cost field shows Rs/Student/Month for "Annual Upfront", otherwise the lumpsum amount.
+				let rsPerMonth = g("RsStudentPerMonth", "rsStudentPerMonth");
+				let lumpsum = g("LumpsumAmount", "lumpsumAmount");
+				let costVal = (selectedPaymentType === paymentMethods[0]) ? rsPerMonth : lumpsum;
+				if (costVal && costVal !== "0") { document.getElementById("etCostStudentMonth").value = costVal; }
+				document.getElementById("etInstallationCharge").value = g("InstallationCharge", "installationCharge");
+				document.getElementById("etSMSCharge").value = g("SmsCharge", "smsCharge");
+				document.getElementById("etFreeSMSCount").value = g("SmsFree", "smsFree");
+				setSelectValue("spFreeMonths", g("MonthsFree", "monthsFree"));
+				document.getElementById("etNegotiatedAmount").value = g("NegotiatedAmount", "negotiatedAmount");
+
+				let qStage = g("QuotationStage", "quotationStage");
+				if (qStage === "Before Demo") { selectStage("Before Demo", document.getElementById("chipBefore")); }
+				else if (qStage === "After Demo") { selectStage("After Demo", document.getElementById("chipAfter")); }
+
+				let qDate = g("QuotationDate", "quotationDate");
+				if (qDate) { document.getElementById("tvQuotationDate").value = qDate; quotationDateForApi = qDate; }
+				let cDate = g("ConversionDate", "conversionDate");
+				if (cDate) { document.getElementById("tvConversionDate").value = cDate; conversionDateForApi = cDate; }
+
+				if (BUYERS_COACH_ENABLED)
+				{
+					document.getElementById("etBuyer1Name").value = g("Buyer1Name", "buyer1Name");
+					document.getElementById("etBuyer1Contact").value = g("Buyer1Contact", "buyer1Contact");
+					document.getElementById("etBuyer2Name").value = g("Buyer2Name", "buyer2Name");
+					document.getElementById("etBuyer2Contact").value = g("Buyer2Contact", "buyer2Contact");
+					document.getElementById("etBuyer3Name").value = g("Buyer3Name", "buyer3Name");
+					document.getElementById("etBuyer3Contact").value = g("Buyer3Contact", "buyer3Contact");
+					document.getElementById("etCoachName").value = g("CoachName", "coachName");
+					document.getElementById("etCoachContact").value = g("CoachContact", "coachContact");
+				}
+			})
+			.catch((err) =>
+			{
+				setMsg(`Error: ${err.message}`, "danger");
+			});
+		};
+
+		// Save edits through the existing generic EditLeadDetails endpoint.
+		const editLead = () =>
+		{
+			if (isSubmitting) return;
+
+			let nameOfOrganization = document.getElementById("etNameOfOrganization").value.trim();
+			let contactPersonName = document.getElementById("etContactPersonName").value.trim();
+			let phone = document.getElementById("etPhone").value.trim();
+			let email = document.getElementById("etContactPersonEmail").value.trim();
+
+			if (!nameOfOrganization) { setMsg("Please enter organization name", "warning"); return; }
+			if (nameOfOrganization.includes("/")) { setMsg("Organization name should not contain /", "warning"); return; }
+			if (!isValidPhone(phone)) { setMsg("Please enter valid phone number", "warning"); return; }
+			if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setMsg("Please enter valid email", "warning"); return; }
+
+			isSubmitting = true;
+			document.getElementById("fabAddLead").disabled = true;
+
+			let feats = [];
+			// Only send core fields that have a value, so we never blank out details that weren't loaded.
+			let put = (n, v) => { if (v !== undefined && v !== null && String(v).trim() !== "") feats.push({ FeatureName: n, FeatureValue: String(v).trim() }); };
+			// Buyers + coach are always sent so they can also be cleared.
+			let putAlways = (n, v) => { feats.push({ FeatureName: n, FeatureValue: (v == null ? "" : String(v)) }); };
+
+			put("Lead", nameOfOrganization);
+			put("School_Name", nameOfOrganization);
+			put("School_Contact_Person", contactPersonName);
+			put("Contact_Number", phone);
+			put("Email_ID", email);
+			put("Designation", document.getElementById("etContactPersonDesignation").value.trim());
+			put("School_Type", document.getElementById("spSchoolType").value);
+			put("No_Of_Students", selectedUnitType);
+			put("Source", document.getElementById("spSource").value);
+			put("Source_Details", document.getElementById("etSourceDetails").value.trim());
+			put("Remarks", document.getElementById("etNote").value.trim());
+
+			// Financial details
+			let costStudentMonth = document.getElementById("etCostStudentMonth").value.trim();
+			if (selectedPaymentType === paymentMethods[0]) { put("RsStudentPerMonth", costStudentMonth); }
+			else { put("Lumpsum_Amount", costStudentMonth); }
+			put("Payment_Terms", document.getElementById("spPaymentMethod").value);
+			put("Installation_Charge", document.getElementById("etInstallationCharge").value.trim());
+			put("SMS_Charge", document.getElementById("etSMSCharge").value.trim());
+			put("SMS_Free", document.getElementById("etFreeSMSCount").value.trim());
+			put("Months_Free", document.getElementById("spFreeMonths").value);
+			put("Negotiated_Amount", document.getElementById("etNegotiatedAmount").value.trim());
+			put("Quotation_Stage", selectedStage);
+			put("Quotation_Date", quotationDateForApi);
+			put("Conversion_Date", conversionDateForApi);
+
+			if (BUYERS_COACH_ENABLED)
+			{
+				putAlways("Buyer1_Name", document.getElementById("etBuyer1Name").value.trim());
+				putAlways("Buyer1_Contact", document.getElementById("etBuyer1Contact").value.trim());
+				putAlways("Buyer2_Name", document.getElementById("etBuyer2Name").value.trim());
+				putAlways("Buyer2_Contact", document.getElementById("etBuyer2Contact").value.trim());
+				putAlways("Buyer3_Name", document.getElementById("etBuyer3Name").value.trim());
+				putAlways("Buyer3_Contact", document.getElementById("etBuyer3Contact").value.trim());
+				putAlways("Coach_Name", document.getElementById("etCoachName").value.trim());
+				putAlways("Coach_Contact", document.getElementById("etCoachContact").value.trim());
+			}
+
+			let params = ["LeadId"];
+			let values = [editLeadId];
+			for (let i = 0; i < feats.length; i++)
+			{
+				params.push(`ListofFeatures[${i}].FeatureName`); values.push(feats[i].FeatureName);
+				params.push(`ListofFeatures[${i}].FeatureValue`); values.push(feats[i].FeatureValue);
+			}
+
+			let url = BASE_URL + ENDPOINTS.editLeadDetails;
+			let dataString = createJSON(params, values);
+			setMsg("Updating lead...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/x-www-form-urlencoded").then((res) =>
+			{
+				if (res && (res.isOk === true || res.IsOk === true))
+				{
+					setMsg("Lead updated successfully", "success");
+					setTimeout(() => { window.location.href = leadsListUrl(); }, 1200);
+				}
+				else
+				{
+					setMsg((res && (res.message || res.Message)) || "Failed to update lead", "danger");
+					document.getElementById("fabAddLead").disabled = false;
+					isSubmitting = false;
+				}
+			})
+			.catch((err) =>
+			{
+				setMsg(`Error: ${err.message}`, "danger");
+				document.getElementById("fabAddLead").disabled = false;
+				isSubmitting = false;
+			});
+		};
+
+		init();
+	</script>
+</body>
+
+</html>

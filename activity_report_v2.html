@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Activity Report</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+	<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap4-theme@1.0.0/dist/select2-bootstrap4.min.css" rel="stylesheet" />
+	<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+	<style>
+		:root { --ink: #0f172a; --muted: #475569; --brand: #2563eb; --bg: #f8fafc; --border: #e2e8f0 }
+
+		body { background: var(--bg) }
+
+		.app-header {
+			position: sticky; top: 0; z-index: 10;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #fff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+		}
+		.title { font-weight: 700; color: #fff; letter-spacing: .5px; }
+
+		.back-button {
+			display: inline-flex; align-items: center; gap: 8px;
+			padding: 6px 12px; background: rgba(255, 255, 255, 0.2);
+			border: none; border-radius: 8px; cursor: pointer; text-decoration: none;
+			color: #fff; font-weight: 600; font-size: 15px; transition: all 0.2s; margin-right: 12px;
+		}
+		.back-button:hover { background: rgba(255, 255, 255, 0.3); text-decoration: none; color: #fff; transform: translateX(-2px); }
+		.back-icon {
+			width: 24px; height: 24px; border-radius: 50%;
+			background: rgba(255, 255, 255, 0.3);
+			display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff;
+		}
+
+		.card { border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+
+		.form-group label { font-weight: 600; color: #475569; margin-bottom: 8px; font-size: 0.9rem; }
+		.form-control:focus, .custom-select:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); }
+
+		.btn-primary {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none; color: white; font-weight: 600; transition: all 0.2s;
+		}
+		.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+		.btn-primary:active { transform: translateY(0); }
+		.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+		input[type="date"] { width: 100%; padding: 0.375rem 0.75rem; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 0.9rem; }
+		input[type="date"]:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); outline: none; }
+
+		/* Select2 customization (same as activity_report.html) */
+		.select2-container { width: 100% !important; }
+		.select2-container--bootstrap4 .select2-selection { border: 1px solid #ced4da; border-radius: 0.25rem; min-height: 38px; }
+		.select2-container--bootstrap4.select2-container--focus .select2-selection,
+		.select2-container--bootstrap4.select2-container--open .select2-selection { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); }
+		.select2-container--bootstrap4 .select2-dropdown { border-color: #667eea; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15); }
+		.select2-results__option--highlighted[aria-selected] { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+		#activityTableReport { font-size: 0.875rem; width: 100% !important; border-collapse: separate; border-spacing: 0; }
+		#activityTableReport thead { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+		#activityTableReport th { font-weight: 600; text-align: left; padding: 12px 16px; border-bottom: none; color: #fff; }
+		#activityTableReport td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #1f2937; vertical-align: top; }
+		#activityTableReport tbody tr { background-color: #ffffff; }
+		#activityTableReport tbody tr:hover { background-color: #f8f9ff; }
+		#activityTableReport_wrapper { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); width: 100%; }
+
+		/* ---- Responsive ---- */
+		@media (max-width: 767px) {
+			.app-header { padding: 8px 0 !important; }
+			.title { font-size: 0.95rem; }
+			.back-button { padding: 4px 8px; font-size: 13px; margin-right: 8px; }
+			.back-icon { width: 20px; height: 20px; font-size: 11px; }
+			.container.my-4 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
+			.card-body { padding: 1rem !important; }
+			#activityTableReport { font-size: 0.8rem; }
+			#activityTableReport th, #activityTableReport td { padding: 8px 10px; }
+			#activityTableReport_wrapper, .dataTables_wrapper { overflow-x: auto; }
+		}
+		@media (max-width: 576px) {
+			.title { font-size: 0.85rem; }
+			.back-button span { display: none; }
+			.back-button { margin-right: 6px; }
+			.card-body { padding: 0.75rem !important; }
+			.btn-primary { font-size: 0.9rem; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="app-header py-2">
+		<div class="container d-flex align-items-center">
+			<button class="back-button" onclick="goBack()">
+				<div class="back-icon">&larr;</div>
+				<span>Back</span>
+			</button>
+			<h5 class="title mb-0">Activity Report</h5>
+		</div>
+	</div>
+
+	<div class="container my-4">
+		<div class="card shadow-sm">
+			<div class="card-body p-4">
+				<h6 class="mb-4 font-weight-bold">Select Filters</h6>
+
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<div class="form-group">
+							<label for="formControlSelectGroup">Select Group</label>
+							<select class="form-control" id="formControlSelectGroup">
+								<option value="0">Select Group</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-md-6 col-sm-12">
+						<div class="form-group">
+							<label for="formControlSelectPerson">Select Person</label>
+							<select class="form-control" id="formControlSelectPerson">
+								<option value="0">Select Group First</option>
+							</select>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<div class="form-group">
+							<label for="selDate">Select Date <span class="text-danger">*</span></label>
+							<input type="date" id="selDate" class="form-control" />
+						</div>
+					</div>
+				</div>
+
+				<button type="button" class="btn btn-primary btn-block" id="btnSubmit">Generate Report</button>
+
+				<div id="downloadExcel" class="mt-3"></div>
+
+				<div class="col-md-12 col-sm-12 col-12 text-center" id="loaderForActivityResult"></div>
+
+				<div class="activityTableForLead mt-4">
+					<h6 class="border-bottom text-muted">Your Result will be shown here.</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+	<script>
+		'use strict';
+
+		// ---- Shared helpers (this project has no src/js/mainScript.js) ----
+		function createJSON(params, values) {
+			if (params.length !== values.length) return "";
+			var json = {};
+			for (var i = 0; i < params.length; ++i) json[params[i]] = values[i];
+			return JSON.stringify(json);
+		}
+
+		function ajaxCall(url, type, dataString, contentType, callBackMethod) {
+			$.ajax({
+				url: url, type: type, data: dataString, contentType: contentType,
+				success: function (data) {
+					if (typeof (callBackMethod) === "function") callBackMethod(data);
+				},
+				error: function (jqXHR, textStatus) {
+					$("#loaderForActivityResult").hide();
+					alert("Request failed: " + textStatus);
+				}
+			});
+		}
+
+		function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+			var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+			var CSV = '';
+			if (ShowLabel) {
+				var row = "";
+				for (var index in arrData[0]) row += index + ',';
+				row = row.slice(0, -1);
+				CSV += row + '\r\n';
+			}
+			for (var i = 0; i < arrData.length; i++) {
+				var row = "";
+				for (var index in arrData[i]) row += '"' + arrData[i][index] + '",';
+				CSV += row + '\r\n';
+			}
+			if (CSV == '') { alert("Invalid data"); return; }
+			var fileName = ReportTitle.replace(/ /g, "_");
+			var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+			var link = document.createElement("a");
+			link.href = uri; link.style = "visibility:hidden"; link.download = fileName + ".csv";
+			document.body.appendChild(link); link.click(); document.body.removeChild(link);
+		}
+
+		// ---- Page logic (Activity Report) ----
+		var selectedPersonId = "0";
+
+		function goBack() { window.location.href = 'groups.html'; }
+
+		function isEmpty(obj) {
+			for (var prop in obj) { if (obj.hasOwnProperty(prop)) return false; }
+			return true;
+		}
+
+		$(document).ready(function () {
+			gatherGroups();
+
+			$('#formControlSelectGroup').select2({ theme: 'bootstrap4', placeholder: 'Select a group', allowClear: true, width: '100%' });
+			$('#formControlSelectPerson').select2({ theme: 'bootstrap4', placeholder: 'Select a person', width: '100%' });
+
+			$("#formControlSelectGroup").on("change", groupChanged);
+
+			$(document).on("click", "#btnDownload", function () {
+				var data = localStorage.getItem("ExcelDownloadForActivity");
+				JSONToCSVConvertor(data, "ExcelDownloadForActivity", true);
+			});
+		});
+
+		// Populate the Group dropdown from the logged-in person's groups
+		function gatherGroups() {
+			var url = "https://trakkerz.trakkerz.com/api/PersonsToGroups/GetAllGroupDetailsByPersonId";
+			var personId = localStorage.getItem("USER_PERSON_ID") || localStorage.getItem("personId") || "1";
+			var dataString = createJSON(["PersonId"], [personId]);
+			ajaxCall(url, "POST", dataString, "application/json", function (res) {
+				var data = res.ResponseObject || [];
+				var html = "<option value='0'>Select Group</option>";
+				for (var index = 0; index < data.length; index++) {
+					var name = data[index].GroupName || "";
+					if (name.length > 30) name = name.substring(0, 30) + "...";
+					html += "<option value='" + data[index].GroupId + "'>" + name + "</option>";
+				}
+				$("#formControlSelectGroup").html(html).trigger('change.select2');
+			});
+		}
+
+		// When a group is chosen, populate the Person dropdown with its members
+		function groupChanged() {
+			var value = this.value;
+			if (value != "" && value != "0" && value != "Select Group") {
+				var url = "https://trakkerz.trakkerz.com/api/Groups/GetMembersByGroupId";
+				var dataString = "{'GroupId':" + value + "}";
+				ajaxCall(url, "POST", dataString, "application/json", function (res) {
+					var data = res.ResponseObject || [];
+					var html = '<option value="0">Select Person</option>';
+					for (var index = 0; index < data.length; index++) {
+						html += "<option value='" + data[index].PersonId + "'>" +
+							data[index].FirstName + " " + data[index].LastName + "</option>";
+					}
+					$("#formControlSelectPerson").html(html).trigger('change.select2');
+				});
+			} else {
+				$("#formControlSelectPerson").html('<option value="0">Select Group First</option>').trigger('change.select2');
+			}
+		}
+
+		$(document).on("click", "#btnSubmit", function () {
+			$("#loaderForActivityResult").html('<div class="spinner-border text-primary my-3" role="status"><span class="sr-only">Loading...</span></div>').show();
+
+			var selDate = $("#selDate").val();
+			var group = $("#formControlSelectGroup").val();
+			selectedPersonId = $("#formControlSelectPerson").val();
+			var organizationId = 1;
+
+			if (selDate == "") { $("#loaderForActivityResult").hide(); alert("Please select Date"); return false; }
+			if (group == "" || group == "0") group = 7598;
+
+			var url = "https://management.trakkerz.com/api/Actions/FetchActivityHistoryPerday";
+			var dataString = createJSON(["OrganizationId", "GroupId", "ActivityDate"], [organizationId, group, selDate]);
+			ajaxCall(url, "POST", dataString, "application/json", activitySuccess);
+		});
+
+		function activitySuccess(res) {
+			if (res.IsOk) {
+				$("#loaderForActivityResult").hide();
+				var person = selectedPersonId;
+				res = res.ResponseObject || [];
+				var html = '';
+				var excelDownload = [];
+				var rendered = false;
+
+				for (var i = 0; i < res.length; ++i) {
+					if (person == res[i].PersonId) {
+						var personName = res[i].PersonName;
+						var activities = res[i].Activities;
+						if (!isEmpty(activities)) {
+							for (var activityIndex = 0; activityIndex < activities.length; activityIndex++) {
+								var name = activities[activityIndex]["Name"];
+								var schoolName = activities[activityIndex]["SchoolName"];
+								var time = activities[activityIndex]["Time"];
+
+								var innerDetails = {};
+								innerDetails["Person_Name"] = personName;
+								innerDetails["Activity_Name"] = name;
+								innerDetails["School_Name"] = schoolName;
+								innerDetails["Time"] = time;
+								excelDownload[excelDownload.length] = innerDetails;
+
+								html += '<tr>' +
+									'<td>' + personName + '</td>' +
+									'<td>' + name + '</td>' +
+									'<td>' + schoolName + '</td>' +
+									'<td>' + time + '</td>' +
+									'</tr>';
+							}
+
+							var tableData = '<table id="activityTableReport" class="table table-striped table-bordered table-responsive" style="width:100%">' +
+								'<thead><tr><th>Person Name</th><th>Activity Name</th><th>School Name</th><th>Time</th></tr></thead>' +
+								'<tbody id="activityTableRows"></tbody></table>';
+							var downloadButton = '<button type="button" class="btn btn-primary" id="btnDownload">Download Excel</button>';
+
+							$(".activityTableForLead").html(tableData);
+							$("#downloadExcel").html(downloadButton);
+							$("#activityTableRows").html(html);
+							$('#activityTableReport').DataTable();
+							localStorage.setItem("ExcelDownloadForActivity", JSON.stringify(excelDownload));
+							rendered = true;
+						} else {
+							$(".activityTableForLead").html('<h6 class="border-bottom text-muted">No activity found for ' + personName + ' on this date.</h6>');
+							$("#downloadExcel").html('');
+							rendered = true;
+						}
+					}
+				}
+
+				if (!rendered) {
+					$(".activityTableForLead").html('<h6 class="border-bottom text-muted">No activity found for the selected person on this date.</h6>');
+					$("#downloadExcel").html('');
+				}
+			} else {
+				$("#loaderForActivityResult").hide();
+				alert("Sorry, No Records found.");
+				$(".activityTableForLead").html('<h6 class="border-bottom text-muted">Sorry, No Records found.</h6>');
+			}
+		}
+	</script>
+</body>
+
+</html>

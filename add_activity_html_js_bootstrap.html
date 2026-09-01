@@ -1,0 +1,2001 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Add Activity</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="shortcut icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="apple-touch-icon" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+
+	<!-- Editorial fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@300;400;500;600&display=swap" />
+
+	<style>
+		:root
+		{
+			--ink: #1a1d24;
+			--ink-soft: #5b6273;
+			--ink-faint: #9aa1b1;
+			--line: #e6e8ee;
+			--line-soft: #eef0f4;
+			--paper: #ffffff;
+			--bg: #f4f3f0;
+			--accent: #3a5a40;
+			--accent-ink: #2d4732;
+			--accent-bg: #eef2ee;
+			--accent-line: #dde6dd;
+			--cancel: #c2410c;
+			--print: #2563eb;
+			--print-ink: #1d4ed8;
+		}
+
+		* { box-sizing: border-box; }
+
+		.hidden { display: none !important; }
+
+		body
+		{
+			font-family: 'Outfit', system-ui, sans-serif;
+			background:
+				radial-gradient(900px 600px at 15% -10%, #e9ece6 0%, transparent 60%),
+				radial-gradient(800px 600px at 100% 110%, #ece7e0 0%, transparent 55%),
+				var(--bg);
+			min-height: 100vh;
+			color: var(--ink);
+			padding: 24px 16px 48px;
+		}
+
+		/* ---------- Card shell ---------- */
+		.aa-page { max-width: 880px; margin: 0 auto; }
+
+		.back-button
+		{
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 12px;
+			background: white;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			text-decoration: none;
+			color: #0066ff;
+			font-weight: 600;
+			font-size: 15px;
+			transition: all 0.2s;
+			margin-bottom: 16px;
+		}
+		.back-button:hover
+		{
+			background: #f0f5ff;
+			text-decoration: none;
+			color: #0066ff;
+			transform: translateX(-2px);
+		}
+		.back-icon
+		{
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			background: #d1d5db;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			color: white;
+		}
+		.back-button:hover .back-icon { background: #9ca3af; }
+
+		.aa-card
+		{
+			background: var(--paper);
+			border-radius: 20px;
+			box-shadow: 0 24px 60px -18px rgba(26, 29, 36, .18), 0 2px 8px rgba(26, 29, 36, .05);
+			border: 1px solid var(--line-soft);
+			overflow: hidden;
+		}
+
+		/* ---------- Header ---------- */
+		.aa-head
+		{
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			padding: 22px 28px;
+			border-bottom: 1px solid var(--line-soft);
+			position: relative;
+		}
+		.aa-head::after
+		{
+			content: "";
+			position: absolute;
+			left: 28px; right: 28px; bottom: -1px;
+			height: 1px;
+			background: linear-gradient(90deg, var(--accent) 0%, transparent 28%);
+		}
+		.aa-badge
+		{
+			width: 42px; height: 42px;
+			border-radius: 11px;
+			display: grid; place-items: center;
+			background: var(--accent-bg);
+			border: 1px solid var(--accent-line);
+			color: var(--accent);
+			flex-shrink: 0;
+		}
+		.aa-badge svg { width: 21px; height: 21px; }
+		.aa-titles { flex: 1; min-width: 0; }
+		.aa-titles h1
+		{
+			font-family: 'Fraunces', Georgia, serif;
+			font-weight: 600;
+			font-size: 24px;
+			letter-spacing: -.01em;
+			line-height: 1.1;
+			margin: 0;
+		}
+		.aa-titles p { font-size: 13px; color: var(--ink-faint); margin: 3px 0 0; font-weight: 300; }
+		.aa-pill
+		{
+			font-size: 12px;
+			color: var(--ink-soft);
+			background: #f1f0ec;
+			border: 1px solid var(--line);
+			border-radius: 999px;
+			padding: 6px 14px;
+			font-weight: 500;
+			white-space: nowrap;
+			flex-shrink: 0;
+		}
+		.aa-pill:empty { display: none; }
+
+		/* ---------- Body ---------- */
+		.aa-body { padding: 24px 28px 8px; }
+
+		.aa-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+		.aa-field { margin-bottom: 18px; }
+
+		.aa-card label,
+		.aa-label
+		{
+			display: block;
+			font-size: 13.5px;
+			font-weight: 600;
+			letter-spacing: 0;
+			text-transform: none;
+			color: var(--ink);
+			margin-bottom: 8px;
+		}
+
+		.aa-card select.form-control,
+		.aa-card input.form-control,
+		.aa-card textarea.form-control
+		{
+			font-family: inherit;
+			font-size: 14px;
+			color: var(--ink);
+			background: #fbfbfa;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 11px 14px;
+			height: auto;
+			box-shadow: none;
+			transition: border-color .18s, box-shadow .18s, background .18s;
+		}
+		.aa-card .form-control:focus
+		{
+			border-color: var(--accent);
+			box-shadow: 0 0 0 3px rgba(58, 90, 64, .12);
+			background: #fff;
+		}
+		.aa-card .form-control::placeholder { color: var(--ink-faint); font-weight: 300; }
+		.aa-card .form-control:disabled { background: #f1f2f4; }
+
+		.aa-note { font-size: 12px; color: var(--ink-faint); margin-top: 8px; display: block; }
+
+		.aa-card .section-title
+		{
+			font-family: 'Fraunces', Georgia, serif;
+			font-weight: 600;
+			color: var(--accent-ink);
+		}
+		.aa-card hr { border-color: var(--line-soft); }
+
+		/* ---------- SPEND status ---------- */
+		.spend-grid
+		{
+			display: grid;
+			grid-template-columns: repeat(5, 1fr);
+			gap: 10px;
+		}
+		.spend-btn
+		{
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			justify-content: flex-start;
+			padding: 11px 12px;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			background: #fff;
+			cursor: pointer;
+			transition: all .18s ease;
+			font-family: inherit;
+			text-align: left;
+		}
+		.spend-btn:hover { border-color: var(--accent-line); background: #fafbfa; transform: translateY(-1px); }
+		.spend-btn.selected
+		{
+			border: 2px solid var(--ink);
+			box-shadow: 0 6px 14px -6px rgba(26, 29, 36, .35);
+		}
+		.spend-badge
+		{
+			width: 26px; height: 26px;
+			border-radius: 7px;
+			display: grid; place-items: center;
+			color: #fff;
+			font-weight: 700;
+			font-size: 12px;
+			flex-shrink: 0;
+		}
+		.spend-badge.s { background: #2e7d32; }
+		.spend-badge.p { background: #2563eb; }
+		.spend-badge.e { background: #7c3aed; }
+		.spend-badge.n { background: #0891b2; }
+		.spend-badge.d { background: #6b7280; }
+		.spend-text { font-size: 13.5px; font-weight: 600; color: var(--ink); white-space: nowrap; }
+		.spend-btn.disabled { opacity: .5; pointer-events: none; }
+
+		/* ---------- Optional callout ---------- */
+		.aa-callout
+		{
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			padding: 14px 16px;
+			border: 1px dashed var(--line);
+			border-radius: 14px;
+			background: #fbfbfa;
+			margin: 6px 0 4px;
+		}
+		.aa-callout-icon
+		{
+			width: 38px; height: 38px;
+			border-radius: 10px;
+			background: var(--accent-bg);
+			border: 1px solid var(--accent-line);
+			color: var(--accent);
+			display: grid; place-items: center;
+			flex-shrink: 0;
+		}
+		.aa-callout-icon svg { width: 19px; height: 19px; }
+		.aa-callout-text { flex: 1; min-width: 0; }
+		.aa-callout-text strong { display: block; font-size: 14px; color: var(--ink); font-weight: 600; }
+		.aa-callout-text span { font-size: 12.5px; color: var(--ink-faint); }
+		.aa-open-btn
+		{
+			flex-shrink: 0;
+			background: #fff;
+			border: 1px solid var(--line);
+			border-radius: 9px;
+			padding: 9px 15px;
+			font-size: 13px;
+			font-weight: 600;
+			color: var(--ink);
+			cursor: pointer;
+			transition: all .18s ease;
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+		}
+		.aa-open-btn:hover
+		{
+			border-color: var(--accent);
+			color: var(--accent-ink);
+			background: var(--accent-bg);
+			transform: translateY(-1px);
+		}
+
+		/* ---------- Chips / image (collection & service blocks) ---------- */
+		.chips { display: flex; gap: .5rem; flex-wrap: wrap; }
+		.chip { padding: .45rem .85rem; border-radius: 999px; border: 1px solid var(--line); cursor: pointer; font-size: 13px; transition: all .18s; }
+		.chip.active { background: var(--accent); color: #fff; border-color: transparent; }
+		.img-thumb { width: 110px; height: 110px; object-fit: cover; border-radius: 12px; border: 1px solid var(--line); }
+
+		/* ---------- Footer ---------- */
+		.aa-foot
+		{
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 18px 28px 22px;
+			border-top: 1px solid var(--line-soft);
+		}
+		.aa-foot-hint { flex: 1; font-size: 13px; color: var(--ink-faint); font-weight: 300; }
+		.aa-foot-actions { display: flex; align-items: center; gap: 10px; }
+
+		.aa-btn
+		{
+			font-family: inherit;
+			font-size: 14px;
+			font-weight: 600;
+			border-radius: 11px;
+			padding: 11px 22px;
+			cursor: pointer;
+			border: 1px solid transparent;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			transition: all .2s ease;
+		}
+		.aa-btn svg { width: 16px; height: 16px; }
+		.aa-btn-cancel { background: transparent; color: var(--cancel); padding: 11px 16px; }
+		.aa-btn-cancel:hover { color: #9a3412; background: #fff5ef; }
+		.aa-btn-save { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; box-shadow: 0 8px 18px -8px rgba(102, 126, 234, .6); }
+		.aa-btn-save:hover { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); transform: translateY(-2px); box-shadow: 0 12px 22px -8px rgba(102, 126, 234, .6); }
+		.aa-btn-save:active { transform: translateY(0); }
+		.aa-btn-save:disabled { opacity: .6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+		#msg:empty { display: none; }
+
+		/* ---------- Responsive ---------- */
+		@media (max-width: 700px)
+		{
+			.aa-grid-2 { grid-template-columns: 1fr; }
+			.spend-grid { grid-template-columns: repeat(2, 1fr); }
+			.aa-head { padding: 18px 18px; }
+			.aa-body { padding: 20px 18px 4px; }
+			.aa-foot { padding: 16px 18px 20px; }
+			.aa-titles h1 { font-size: 21px; }
+		}
+
+		@media (max-width: 560px)
+		{
+			.spend-grid { grid-template-columns: 1fr 1fr; }
+			.aa-callout { flex-wrap: wrap; }
+			.aa-open-btn { width: 100%; justify-content: center; }
+			.aa-foot { flex-wrap: wrap; }
+			.aa-foot-hint { flex-basis: 100%; order: 2; text-align: center; margin-top: 4px; }
+			.aa-foot-actions { order: 1; width: 100%; }
+			.aa-btn-save { flex: 1; justify-content: center; }
+		}
+
+		@media (max-width: 380px)
+		{
+			.spend-grid { grid-template-columns: 1fr; }
+		}
+
+		/* ============================================================
+		   Capture Visit Notes modal (editorial theme)
+		   ============================================================ */
+		.vn-overlay
+		{
+			display: none;
+			position: fixed;
+			inset: 0;
+			z-index: 1060;
+			background: rgba(15, 18, 24, .55);
+			padding: 1rem;
+		}
+		.vn-overlay.vn-open { display: flex; align-items: center; justify-content: center; }
+		.vn-overlay .vn2-card { max-width: 760px; width: 100%; }
+
+		/* Send-via-email popup (sits above the visit-notes overlay) */
+		.vn-email-overlay
+		{
+			display: none;
+			position: fixed;
+			inset: 0;
+			z-index: 1080;
+			background: rgba(15, 18, 24, .55);
+			padding: 1rem;
+		}
+		.vn-email-overlay.vn-open { display: flex; align-items: center; justify-content: center; }
+		.vn-email-card
+		{
+			font-family: 'Outfit', system-ui, sans-serif;
+			width: 100%;
+			max-width: 440px;
+			background: #fff;
+			border-radius: 18px;
+			overflow: hidden;
+			border: 1px solid var(--line-soft);
+			box-shadow: 0 24px 60px -18px rgba(26, 29, 36, .35);
+			color: var(--ink);
+		}
+		.vn-email-card .vn2-foot { margin-top: 0; }
+		.vn-email-card .vn2-head { padding: 20px 24px; }
+		.vn-email-card .vn2-head p { margin-top: 4px; }
+		.vn-email-body { padding: 22px 24px 6px; }
+		.vn-email-card label
+		{
+			display: block;
+			font-size: 13.5px;
+			font-weight: 600;
+			color: var(--ink);
+			margin-bottom: 8px;
+		}
+		.vn-email-card input
+		{
+			width: 100%;
+			font-family: inherit;
+			font-size: 14px;
+			color: var(--ink);
+			background: #fbfbfa;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 11px 14px;
+			transition: border-color .18s, box-shadow .18s, background .18s;
+		}
+		.vn-email-card input::placeholder { color: var(--ink-faint); font-weight: 300; }
+		.vn-email-card input:focus
+		{
+			outline: none;
+			background: #fff;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 3px rgba(58, 90, 64, .12);
+		}
+
+		.vn2-card
+		{
+			font-family: 'Outfit', system-ui, sans-serif;
+			width: 100%;
+			background: #fff;
+			border-radius: 20px;
+			box-shadow: 0 24px 60px -18px rgba(26, 29, 36, .28), 0 2px 8px rgba(26, 29, 36, .06);
+			overflow: hidden;
+			border: 1px solid var(--line-soft);
+			color: var(--ink);
+			display: flex;
+			flex-direction: column;
+			max-height: calc(100vh - 2rem);
+		}
+		.vn2-head { flex-shrink: 0; }
+		.vn2-foot { flex-shrink: 0; }
+
+		.vn2-head
+		{
+			display: flex;
+			align-items: center;
+			gap: 14px;
+			padding: 22px 28px;
+			border-bottom: 1px solid var(--line-soft);
+			position: relative;
+		}
+		.vn2-head::after
+		{
+			content: "";
+			position: absolute;
+			left: 28px; right: 28px; bottom: -1px;
+			height: 1px;
+			background: linear-gradient(90deg, var(--accent) 0%, transparent 28%);
+		}
+		.vn2-badge
+		{
+			width: 42px; height: 42px;
+			border-radius: 11px;
+			display: grid; place-items: center;
+			background: var(--accent-bg);
+			border: 1px solid var(--accent-line);
+			color: var(--accent);
+			flex-shrink: 0;
+		}
+		.vn2-badge svg { width: 21px; height: 21px; }
+		.vn2-titles { flex: 1; }
+		.vn2-titles h1
+		{
+			font-family: 'Fraunces', Georgia, serif;
+			font-weight: 600;
+			font-size: 22px;
+			letter-spacing: -.01em;
+			line-height: 1.1;
+			margin: 0;
+		}
+		.vn2-titles p { font-size: 13px; color: var(--ink-faint); margin: 3px 0 0; font-weight: 300; }
+		.vn2-close
+		{
+			width: 34px; height: 34px;
+			border: 1px solid var(--line);
+			background: #fff;
+			border-radius: 9px;
+			color: var(--ink-soft);
+			cursor: pointer;
+			display: grid; place-items: center;
+			transition: .18s ease;
+			opacity: 1; text-shadow: none;
+		}
+		.vn2-close:hover { background: #f5f6f7; color: var(--ink); border-color: #cfd4dd; transform: rotate(90deg); }
+		.vn2-close svg { width: 16px; height: 16px; }
+
+		.vn2-body
+		{
+			padding: 18px 24px 6px;
+			flex: 1 1 auto;
+			overflow-y: auto;
+			-webkit-overflow-scrolling: touch;
+		}
+		.vn2-grid { display: grid; grid-template-columns: 1fr 220px; gap: 12px 24px; align-items: start; }
+		.vn2-field { margin-bottom: 12px; }
+		.vn2-field.full { grid-column: 1 / -1; }
+
+		/* Sections (Bugs / Features) */
+		.vn-section { margin-bottom: 6px; }
+		.vn-section-head { margin-bottom: 8px; }
+		.vn-section-title
+		{
+			font-size: 14px;
+			font-weight: 700;
+			color: var(--ink);
+		}
+
+		/* Repeating items */
+		.vn-item,
+		.vn-entry
+		{
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			padding: 12px 14px 0;
+			margin-bottom: 10px;
+			background: #fcfcfb;
+		}
+		.vn-item-head,
+		.vn-entry-head
+		{
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 8px;
+		}
+		.vn-item-title,
+		.vn-entry-title
+		{
+			font-size: 11.5px;
+			font-weight: 700;
+			letter-spacing: .05em;
+			text-transform: uppercase;
+			color: var(--ink-faint);
+		}
+		.vn-entry-remove
+		{
+			border: none;
+			background: transparent;
+			color: #c2410c;
+			font-size: 12.5px;
+			font-weight: 600;
+			cursor: pointer;
+			padding: 3px 8px;
+			border-radius: 7px;
+			transition: .18s ease;
+		}
+		.vn-entry-remove:hover { color: #9a3412; background: #fff5ef; }
+		.vn-entry-grid { display: grid; grid-template-columns: 1fr 200px; gap: 8px 20px; }
+
+		.vn-item-actions { display: flex; align-items: center; gap: 8px; }
+
+		/* Send via email (per bug / per feature) — shown only when the item has a value */
+		.vn-odoo-btn
+		{
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			border: 1px solid #c7d6f0;
+			background: #eef2fb;
+			color: #2563eb;
+			font-family: inherit;
+			font-weight: 600;
+			font-size: 12px;
+			border-radius: 8px;
+			padding: 6px 12px;
+			cursor: pointer;
+			transition: .18s ease;
+		}
+		.vn-odoo-btn:hover
+		{
+			background: #2563eb;
+			border-color: transparent;
+			color: #fff;
+			transform: translateY(-1px);
+			box-shadow: 0 6px 14px -6px rgba(37, 99, 235, .6);
+		}
+		.vn-odoo-btn:active { transform: translateY(0); }
+		.vn-odoo-btn svg { width: 14px; height: 14px; }
+
+		.vn-addmore
+		{
+			display: inline-flex;
+			align-items: center;
+			gap: 6px;
+			border: 1px dashed var(--accent-line);
+			background: var(--accent-bg);
+			color: var(--accent-ink);
+			font-family: inherit;
+			font-weight: 600;
+			font-size: 13px;
+			border-radius: 10px;
+			padding: 9px 14px;
+			cursor: pointer;
+			transition: .18s ease;
+			margin: 2px 0 16px;
+		}
+		.vn-addmore:hover
+		{
+			background: #16a34a;
+			border-color: transparent;
+			color: #fff;
+			transform: translateY(-2px) scale(1.02);
+			box-shadow: 0 8px 18px -8px rgba(22, 163, 74, 0.5);
+		}
+		.vn-addmore:active { transform: translateY(0) scale(1); }
+		.vn-addmore:focus,
+		.vn-addmore:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25); }
+		.vn-addmore svg { width: 15px; height: 15px; }
+
+		.vn2-card label
+		{
+			display: flex;
+			align-items: center;
+			gap: 7px;
+			font-size: 13.5px;
+			font-weight: 600;
+			letter-spacing: 0;
+			text-transform: none;
+			color: var(--ink);
+			margin-bottom: 9px;
+		}
+		.vn2-card label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+		.vn2-card label .dot.amber { background: #c98a2b; }
+		.vn2-card label .dot.slate { background: #6b7280; }
+
+		.vn2-card textarea,
+		.vn2-card input
+		{
+			width: 100%;
+			font-family: inherit;
+			font-size: 14px;
+			color: var(--ink);
+			background: #fbfbfa;
+			border: 1px solid var(--line);
+			border-radius: 14px;
+			padding: 9px 15px;
+			transition: border-color .18s, box-shadow .18s, background .18s;
+			resize: vertical;
+		}
+		.vn2-card textarea { min-height: 80px; line-height: 1.5; }
+		.vn2-card textarea::placeholder,
+		.vn2-card input::placeholder { color: var(--ink-faint); font-weight: 300; }
+		.vn2-card textarea:focus,
+		.vn2-card input:focus
+		{
+			outline: none;
+			background: #fff;
+			border-color: var(--accent);
+			box-shadow: 0 0 0 3px rgba(58, 90, 64, .12);
+		}
+		.vn2-hint { font-size: 11.5px; color: var(--ink-faint); margin: 8px 0 0; font-weight: 300; }
+
+		.vn2-foot
+		{
+			display: flex;
+			align-items: center;
+			gap: 12px;
+			padding: 18px 28px 24px;
+			border-top: 1px solid var(--line-soft);
+			margin-top: 8px;
+		}
+		.vn2-foot .spacer { flex: 1; min-width: 0; }
+		.vn-save-msg { font-size: 12.5px; font-weight: 600; }
+		.vn2-btn
+		{
+			font-family: inherit;
+			font-size: 14px;
+			font-weight: 600;
+			border-radius: 11px;
+			padding: 11px 20px;
+			cursor: pointer;
+			transition: .2s ease;
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			border: 1px solid transparent;
+		}
+		.vn2-btn svg { width: 16px; height: 16px; }
+
+		/* Cancel = standard cancel (orange) */
+		.vn2-btn-ghost { background: transparent; color: var(--cancel); padding: 11px 16px; }
+		.vn2-btn-ghost:hover { color: #9a3412; background: #fff5ef; transform: translateY(-1px); }
+
+		/* Save = green */
+		.vn2-btn-secondary { background: var(--accent-bg); border-color: var(--accent-line); color: var(--accent-ink); }
+		.vn2-btn-secondary:hover { background: var(--accent); border-color: transparent; color: #fff; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(58, 90, 64, 0.3); }
+		.vn2-btn-secondary:active { transform: translateY(0); }
+
+		/* Save & Print = blue */
+		.vn2-btn-primary { background: var(--print); color: #fff; box-shadow: 0 8px 18px -8px rgba(37, 99, 235, .6); }
+		.vn2-btn-primary:hover { background: var(--print-ink); transform: translateY(-2px); box-shadow: 0 12px 22px -8px rgba(37, 99, 235, .6); }
+		.vn2-btn-primary:active { transform: translateY(0); }
+
+		@media (max-width: 600px)
+		{
+			.vn2-grid { grid-template-columns: 1fr; gap: 0; }
+			.vn-entry-grid { grid-template-columns: 1fr; gap: 0; }
+			.vn-item-head { flex-wrap: wrap; gap: 6px; }
+			/* Keep Cancel / Save / Save & Print on ONE line on every device */
+			.vn2-foot { flex-wrap: nowrap; gap: 8px; padding: 14px 16px 18px; }
+			.vn2-foot .spacer { display: none; }
+			.vn2-btn { flex: 1 1 0; justify-content: center; padding: 11px 6px; font-size: 13px; white-space: nowrap; }
+			.vn2-btn-ghost { padding: 11px 4px; }
+		}
+
+		@media (max-width: 380px)
+		{
+			.vn2-btn { font-size: 12px; gap: 5px; }
+			.vn2-btn svg { width: 14px; height: 14px; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="aa-page">
+		<button class="back-button" onclick="goBack()">
+			<div class="back-icon">←</div>
+			<span>Back</span>
+		</button>
+		<div class="aa-card">
+
+			<header class="aa-head">
+				<div class="aa-badge">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="4" y="3" width="16" height="18" rx="2" />
+						<path d="M9 3v3h6V3M8 12h8M8 16h5" />
+					</svg>
+				</div>
+				<div class="aa-titles">
+					<h1 id="tvTitle">Add Activity</h1>
+					<p>Record a visit, call or meeting</p>
+				</div>
+				<span class="aa-pill" id="tvLeadName"></span>
+			</header>
+
+			<div class="aa-body">
+
+				<div class="aa-grid-2">
+					<div class="aa-field">
+						<label>Activity</label>
+						<select id="spActivity" class="form-control" onchange="onActivityChange(this.value)">
+							<option>Call</option>
+							<option>Email</option>
+							<option>Visit</option>
+							<option>Training</option>
+							<option>Visit with Axis</option>
+							<option>Visit with Partner</option>
+						</select>
+					</div>
+					<div class="aa-field">
+						<label>Purpose of Visit</label>
+						<select id="spPurposeVisit" class="form-control" onchange="onPurposeChange(this.value)">
+							<option>Sales</option>
+							<option>Collection</option>
+							<option>Service</option>
+							<option>Training</option>
+							<option>Demo</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="aa-field">
+					<label>SPEND Status</label>
+					<div class="spend-grid status-grid">
+						<button class="spend-btn status-btn" data-status="S" id="rbS" onclick="selectStatus('S')">
+							<span class="spend-badge s">S</span><span class="spend-text">Suspect</span>
+						</button>
+						<button class="spend-btn status-btn" data-status="P" id="rbP" onclick="selectStatus('P')">
+							<span class="spend-badge p">P</span><span class="spend-text">Prospect</span>
+						</button>
+						<button class="spend-btn status-btn" data-status="E" id="rbE" onclick="selectStatus('E')">
+							<span class="spend-badge e">E</span><span class="spend-text">Engaged</span>
+						</button>
+						<button class="spend-btn status-btn" data-status="N" id="rbN" onclick="selectStatus('N')">
+							<span class="spend-badge n">N</span><span class="spend-text">Negotiation</span>
+						</button>
+						<button class="spend-btn status-btn" data-status="D" id="rbD" onclick="selectStatus('D')">
+							<span class="spend-badge d">D</span><span class="spend-text">Done</span>
+						</button>
+					</div>
+					<small id="statusNote" class="aa-note"></small>
+				</div>
+
+				<div class="aa-grid-2">
+					<div class="aa-field">
+						<label>Assign another person</label>
+						<input id="tvAssignee" class="form-control" placeholder="Select assignee" readonly onclick="fetchMembers()" />
+					</div>
+					<div class="aa-field">
+						<label>Next Appointment</label>
+						<input id="tvNextApoinmentDate" type="datetime-local" class="form-control" />
+					</div>
+				</div>
+
+				<div class="aa-field">
+					<label>Note</label>
+					<input id="etNote" class="form-control" placeholder="Remark / note" />
+				</div>
+
+				<!-- Optional: Capture Visit Notes -->
+				<div class="aa-callout">
+					<div class="aa-callout-icon">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+							<rect x="8" y="2" width="8" height="4" rx="1" />
+							<path d="M9 12h6M9 16h4" />
+						</svg>
+					</div>
+					<div class="aa-callout-text">
+						<strong>Optional: Capture Visit Notes</strong>
+						<span>Log bugs, features or remarks in a detailed form — opens a separate window.</span>
+					</div>
+					<button type="button" class="aa-open-btn" onclick="openVisitNotes()">Open form →</button>
+				</div>
+
+				<!-- Collection block -->
+				<div id="llCollapsible" class="hidden">
+					<hr />
+					<h6 class="section-title">Collection Details</h6>
+					<div class="row">
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Payment Method</label>
+								<select id="spPaymentMethod" class="form-control" onchange="onPaymentMethodChange(this.value)">
+									<option>Cash</option>
+									<option>Cheque</option>
+									<option>Online</option>
+									<option>UPI</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Reference Number</label>
+								<input id="etRefrenceNumber" class="form-control" inputmode="numeric" />
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="aa-field">
+								<label>Amount</label>
+								<input id="etAmount" class="form-control" inputmode="decimal" />
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="aa-field">
+								<label>Bill Raised</label>
+								<input id="etBillRaised" class="form-control" inputmode="decimal" />
+							</div>
+						</div>
+						<div class="col-12 col-md-4">
+							<div class="aa-field">
+								<label>Attach Picture</label>
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="fileInput" accept="image/*" />
+									<label class="custom-file-label" for="fileInput">Choose image…</label>
+								</div>
+								<img id="ivImage" class="img-thumb mt-2 d-none" alt="preview" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Service block -->
+				<div id="llService" class="hidden">
+					<hr />
+					<h6 class="section-title">Service Details</h6>
+					<div class="row">
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Service Type</label>
+								<select id="spServiceType" class="form-control">
+									<option>Hardware</option>
+									<option>Software</option>
+									<option>Training</option>
+									<option>Support</option>
+									<option>Others</option>
+									<option>Not Applicable</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Client Visit (Before/After Demo)</label>
+								<div class="chips">
+									<span id="tvQuoteBeforeDemo" class="chip" data-val="Yes" onclick="selectClientVisit('Yes', this)">Before Demo</span>
+									<span id="tvQuoteAfterDemo" class="chip" data-val="No" onclick="selectClientVisit('No', this)">After Demo</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Feedback Rating</label>
+								<input id="ratingBar" type="range" min="0" max="5" step="1" class="form-control" />
+							</div>
+						</div>
+						<div class="col-12 col-md-6">
+							<div class="aa-field">
+								<label>Comments</label>
+								<input id="etComment" class="form-control" placeholder="Comments" />
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="msg" class="mt-3"></div>
+			</div>
+
+			<footer class="aa-foot">
+				<span class="aa-foot-hint">Fill the fields above, then save this activity.</span>
+				<div class="aa-foot-actions">
+					<button type="button" class="aa-btn aa-btn-cancel" onclick="goBack()">Cancel</button>
+					<button type="button" id="fabAddActivity" class="aa-btn aa-btn-save" onclick="saveActivity()">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+						Save Activity
+					</button>
+				</div>
+			</footer>
+
+		</div>
+	</div>
+
+	<!-- Assignee Modal -->
+	<div class="modal fade" id="assigneeModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Select Assignee</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<input id="assigneeSearch" class="form-control mb-2" placeholder="Search" />
+					<ul id="assigneeList" class="list-group" style="max-height:300px;overflow:auto"></ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					<button type="button" id="btnSelectAssignee" class="btn btn-primary" onclick="selectAssignee()">OK</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Capture Visit Notes Modal -->
+	<div class="vn-overlay" id="visitNotesModal" role="dialog" aria-modal="true" aria-labelledby="vnTitle">
+		<div class="vn2-card">
+
+				<header class="vn2-head">
+					<div class="vn2-badge">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+							<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+							<rect x="8" y="2" width="8" height="4" rx="1" />
+							<path d="M9 12h6M9 16h4" />
+						</svg>
+					</div>
+					<div class="vn2-titles">
+						<h1 id="vnTitle">Capture Visit Notes</h1>
+						<p>Log bugs, features and remarks from this visit</p>
+					</div>
+					<button type="button" class="vn2-close" data-dismiss="modal" onclick="closeVisitNotes()" aria-label="Close">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="pointer-events:none"><path d="M18 6 6 18M6 6l12 12" /></svg>
+					</button>
+				</header>
+
+				<div class="vn2-body">
+
+					<!-- Bugs -->
+					<div class="vn-section">
+						<div class="vn-section-head"><span class="vn-section-title">Bugs</span></div>
+						<div id="vnBugs"></div>
+						<button type="button" class="vn-addmore" onclick="addBug()">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+							Add more bug
+						</button>
+					</div>
+
+					<!-- Features -->
+					<div class="vn-section">
+						<div class="vn-section-head"><span class="vn-section-title">Features</span></div>
+						<div id="vnFeatures"></div>
+						<button type="button" class="vn-addmore" onclick="addFeature()">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+							Add more feature
+						</button>
+					</div>
+
+					<div class="vn2-field">
+						<label><span class="dot slate"></span> Remarks</label>
+						<textarea id="vnRemarks" placeholder="Additional remarks…" style="min-height:80px;"></textarea>
+					</div>
+
+				</div>
+
+				<footer class="vn2-foot">
+					<div class="spacer"><span id="vnMsg" class="vn-save-msg"></span></div>
+					<button type="button" class="vn2-btn vn2-btn-ghost" data-dismiss="modal" onclick="closeVisitNotes()">Cancel</button>
+					<button type="button" class="vn2-btn vn2-btn-secondary" onclick="saveVisitNotes(false)">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" /><path d="M17 21v-8H7v8M7 3v5h8" /></svg>
+						Save
+					</button>
+					<button type="button" class="vn2-btn vn2-btn-primary" onclick="saveVisitNotes(true)">
+						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 14h12v8H6z" /></svg>
+						Save &amp; Print
+					</button>
+				</footer>
+
+		</div>
+	</div>
+
+	<!-- Send via email popup -->
+	<div class="vn-email-overlay" id="emailModal" role="dialog" aria-modal="true" aria-labelledby="emailTitle">
+		<div class="vn-email-card">
+			<header class="vn2-head">
+				<div class="vn2-badge">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2" /><path d="m3 7 9 6 9-6" /></svg>
+				</div>
+				<div class="vn2-titles">
+					<h1 id="emailTitle">Send via email</h1>
+					<p>These details will be emailed to wecare@vawsum.com</p>
+				</div>
+				<button type="button" class="vn2-close" onclick="closeEmailModal()" aria-label="Close">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="pointer-events:none"><path d="M18 6 6 18M6 6l12 12" /></svg>
+				</button>
+			</header>
+
+			<div class="vn-email-body">
+				<div class="vn2-field" style="margin-bottom:0;">
+					<label>Your email</label>
+					<input id="emailFrom" type="email" placeholder="you@example.com" />
+					<p class="vn2-hint" style="margin-top:8px;">We'll note this as the reporter on the email.</p>
+					<p class="vn2-hint" id="emailErr" style="color:#dc2626; display:none; margin-top:8px;">Please enter a valid email address.</p>
+				</div>
+			</div>
+
+			<footer class="vn2-foot">
+				<div class="spacer"></div>
+				<button type="button" class="vn2-btn vn2-btn-ghost" onclick="closeEmailModal()">Cancel</button>
+				<button type="button" class="vn2-btn vn2-btn-primary" id="emailSendBtn" onclick="submitEmail()">Send</button>
+			</footer>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		"use strict";
+
+		// ====== CONFIG ======
+		// const BASE_URL = "http://localhost:51450/api/";
+		const BASE_URL = "https://management.trakkerz.com/api/";
+		const ENDPOINTS =
+		{
+			addActivity: "Actions/PerformAction",
+			getMembersByGroup: "Groups/GetMembersByGroupId",
+			uploadImage: "Files/UploadImage",
+			createSchool: "School/Create"
+		};
+
+		// ====== STATE (mirrors Android vars) ======
+		let acttivtyStatus = "S"; // S,P,E,N,D
+		let selectedPaymentMethod = "";
+		let publicId = "Untitled"; // returned from upload
+		let selectedPerson = -1; // index in member list
+		let membersByGroupIdList = [];
+		let selectedItem = "Sales"; // purpose
+		let activityType = "Call"; // activity
+		let feedbackType = "";
+		let rating = "0";
+		let comments = "";
+		let clientStatus = ""; // Yes/No from before/after demo
+		// from intent/extras in Android – set defaults here or inject from server/session
+		let groupId = localStorage.getItem('USER_GROUP_ID') || "1";
+		let leadId = localStorage.getItem('SELECTED_LEAD_ID') || "1";
+		let personId = localStorage.getItem('USER_PERSON_ID') || "1";
+		let leadName = localStorage.getItem('SELECTED_LEAD_NAME') || ""; // show near title if provided
+		let billRaised = "";
+		let noOfStudents = "";
+		let mobileNumber = "";
+		let dateFormatForApi = ""; // YYYY-MM-DD HH:mm (from datetime-local)
+		let personName = (localStorage.getItem('USER_FIRST_NAME') || '') + ' ' + (localStorage.getItem('USER_LAST_NAME') || '') || "System User";
+
+		// ====== HELPERS ======
+		const setMsg = (text, type) =>
+		{
+			const m = document.getElementById("msg");
+			if (!text)
+			{
+				m.className = ""; m.textContent = ""; return;
+			}
+			m.className = `alert alert-${type || "info"}`;
+			m.textContent = text;
+		};
+
+		const createJSON = (params, values) =>
+		{
+			const qs = new URLSearchParams();
+			for (let i = 0; i < params.length; i++)
+			{
+				qs.append(params[i], values[i]);
+			}
+			return qs.toString();
+		};
+
+		const promisingAjaxCall = (url, method, data, contentType) =>
+		{
+			return fetch(url, { method, headers: { "Content-Type": contentType || "application/x-www-form-urlencoded" }, body: data })
+				.then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+				.then(t => { try { return JSON.parse(t); } catch (e) { return { isOk: false, message: "Invalid JSON" }; } });
+		};
+
+		const fillAssignee = (list) =>
+		{
+			const ul = document.getElementById("assigneeList");
+			ul.innerHTML = "";
+			list.forEach((m, i) =>
+			{
+				const li = document.createElement("li");
+				li.className = "list-group-item d-flex justify-content-between align-items-center";
+				const full = (m.firstName || "") + " " + (m.lastName || "");
+				li.textContent = full.trim();
+				li.onclick = () =>
+				{
+					[...ul.children].forEach(n => n.classList.remove("active"));
+					li.classList.add("active");
+					selectedPerson = i;
+				};
+				ul.appendChild(li);
+			});
+		};
+
+		const fetchMembers = () =>
+		{
+			const ul = document.getElementById("assigneeList");
+
+			// Open the picker right away so the click always does something visible
+			ul.innerHTML = '<li class="list-group-item text-muted">Loading members…</li>';
+			$('#assigneeModal').modal('show');
+
+			const data = createJSON(["GroupId"], [groupId]);
+			promisingAjaxCall("https://trakkerz.trakkerz.com/api/" + ENDPOINTS.getMembersByGroup, "POST", data, "application/x-www-form-urlencoded")
+			.then(res =>
+			{
+				membersByGroupIdList = Array.isArray(res) ? res : (res.responseObject || res.ResponseObject || []);
+				if (membersByGroupIdList.length)
+				{
+					fillAssignee(membersByGroupIdList);
+				}
+				else
+				{
+					ul.innerHTML = '<li class="list-group-item text-muted">No members found for this group.</li>';
+				}
+			})
+			.catch(e =>
+			{
+				ul.innerHTML = `<li class="list-group-item text-danger">Could not load members: ${e.message}</li>`;
+			});
+		};
+
+		const uploadImage = (file) =>
+		{
+			const form = new FormData();
+			form.append("file", file);
+			return fetch(BASE_URL + ENDPOINTS.uploadImage, { method: "POST", body: form })
+				.then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+				.then(j => { publicId = j.publicId || j.id || "Untitled"; return publicId; });
+		};
+
+		const toApiDate = (dtLocal) =>
+		{
+			if (!dtLocal) return "";
+			return dtLocal.replace("T", " ");
+		};
+
+		const buildActivityPayload = () =>
+		{
+			const etNote = document.getElementById('etNote').value.trim();
+			const etRef = document.getElementById('etRefrenceNumber').value.trim();
+			const etAmount = document.getElementById('etAmount').value.trim();
+			const etBill = document.getElementById('etBillRaised').value.trim();
+			const nextAppt = document.getElementById('tvNextApoinmentDate').value;
+			dateFormatForApi = nextAppt ? nextAppt.replace("T", " ") : "";
+			comments = document.getElementById('etComment') ? document.getElementById('etComment').value.trim() : "";
+
+			const features = [];
+			const F = (bo, name, val) =>
+			{
+				const v = (val === undefined || val === null || val === "") ? "" : String(val);
+				features.push({ BOName: bo, FeatureName: name, FeatureValue: v });
+			};
+
+			// Add activity features
+			F("BO_Add_Activity", "Activity", activityType);
+			F("BO_Add_Activity", "Purpose", selectedItem);
+			F("BO_Add_Lead", "SPEND_Status", acttivtyStatus);
+			F("BO_Add_Activity", "SPEND_Status", acttivtyStatus);
+			F("BO_Add_Activity", "Next_Appointment_Date", dateFormatForApi);
+			F("BO_Add_Lead", "Next_Appointment_Date", dateFormatForApi);
+			F("BO_Add_Activity", "Remarks", etNote);
+			F("BO_Add_Lead", "Bill_Raised", etBill);
+			F("BO_Add_Activity", "Method", selectedPaymentMethod);
+			F("BO_Add_Activity", "Reference_No", etRef);
+			F("BO_Add_Activity", "Collection_Image", publicId);
+			F("BO_Add_Activity", "Client_Visit", clientStatus);
+			F("BO_Add_Activity", "Amount", etAmount);
+			F("BO_Add_Activity", "Responsible_Person", personName);
+
+			// Combined person id (assignee or 0)
+			const combinedId = (selectedPerson >= 0 && membersByGroupIdList[selectedPerson] && membersByGroupIdList[selectedPerson].personId) ? String(membersByGroupIdList[selectedPerson].personId) : "0";
+			F("BO_Add_Activity", "Combined_Person_Id", combinedId);
+
+			// Build params and values arrays
+			const params = ["ActionId", "OrganizationId", "GroupId", "PersonId", "LeadId"];
+			const values = [2, 1, parseInt(groupId, 10), parseInt(personId, 10), parseInt(leadId, 10)];
+
+			// Add features to params/values
+			for (let i = 0; i < features.length; i++)
+			{
+				const f = features[i];
+				params.push(`ListofFeatures[${i}].BOName`);
+				values.push(f.BOName);
+				params.push(`ListofFeatures[${i}].FeatureName`);
+				values.push(f.FeatureName);
+				params.push(`ListofFeatures[${i}].FeatureValue`);
+				values.push(f.FeatureValue);
+			}
+
+			// Add feedback to params/values
+			params.push("Feedback.Service");
+			values.push(feedbackType || "");
+			params.push("Feedback.Rating");
+			values.push(rating || "0");
+			params.push("Feedback.Comments");
+			values.push(comments || "");
+			params.push("Feedback.PersonName");
+			values.push(personName || "System User");
+
+			return { params, values };
+		};
+
+		// ====== UI WIRING ======
+		const applyStatusDisableIfDoneNonAdmin = () =>
+		{
+			const isDoneNonAdmin = false;
+			if (isDoneNonAdmin)
+			{
+				document.getElementById('statusNote').textContent = 'You are not allowed to change status of lead';
+				document.querySelectorAll('.status-btn').forEach(b => b.classList.add('disabled'));
+			}
+		};
+
+		const showBlocks = () =>
+		{
+			const isCollection = selectedItem === 'Collection';
+			const isService = selectedItem === 'Service' && acttivtyStatus === 'D';
+			document.getElementById('llCollapsible').classList.toggle('hidden', !isCollection);
+			document.getElementById('llService').classList.toggle('hidden', !isService);
+		};
+
+		// Wrapper functions for inline handlers
+		const selectStatus = (status) =>
+		{
+			acttivtyStatus = status;
+
+			// Highlight the chosen status button and clear the others
+			const grid = document.querySelector('.status-grid');
+			if (grid) { grid.classList.add('has-selection'); }
+			document.querySelectorAll('.status-btn').forEach(b => b.classList.remove('selected'));
+			const btn = document.getElementById('rb' + status);
+			if (btn) { btn.classList.add('selected'); }
+
+			showBlocks();
+		};
+
+		const onActivityChange = (value) =>
+		{
+			activityType = value;
+			showBlocks();
+		};
+
+		const onPurposeChange = (value) =>
+		{
+			selectedItem = value;
+			showBlocks();
+		};
+
+		const onPaymentMethodChange = (value) =>
+		{
+			selectedPaymentMethod = value;
+		};
+
+		const selectClientVisit = (val, element) =>
+		{
+			document.getElementById('tvQuoteBeforeDemo').classList.remove('active');
+			document.getElementById('tvQuoteAfterDemo').classList.remove('active');
+			element.classList.add('active');
+			clientStatus = val;
+		};
+
+		const selectAssignee = () =>
+		{
+			if (selectedPerson < 0) { $('#assigneeModal').modal('hide'); return; }
+			const m = membersByGroupIdList[selectedPerson];
+			const selectedAssigneeName = (m.firstName || "") + " " + (m.lastName || "");
+			document.getElementById('tvAssignee').value = selectedAssigneeName.trim();
+			$('#assigneeModal').modal('hide');
+		};
+
+		// Initialize rating handler
+		const initRatingHandler = () =>
+		{
+			document.getElementById('ratingBar').oninput = function () { rating = String(this.value); };
+		};
+
+		// Initialize assignee search handler
+		const initAssigneeSearch = () =>
+		{
+			document.getElementById('assigneeSearch').oninput = function () {
+				const q = this.value.toLowerCase();
+				const filtered = membersByGroupIdList.filter(m => (((m.firstName || "") + " " + (m.lastName || "")).toLowerCase().includes(q)));
+				fillAssignee(filtered);
+			};
+		};
+
+		// Initialize file input handler
+		const initFileInput = () =>
+		{
+			const fileInput = document.getElementById('fileInput');
+			fileInput.onchange = function ()
+			{
+				const f = this.files && this.files[0];
+				if (!f) return;
+				document.querySelector('.custom-file-label').textContent = f.name;
+				const img = document.getElementById('ivImage');
+				img.classList.remove('d-none');
+				img.src = URL.createObjectURL(f);
+				uploadImage(f).catch(() => { });
+			};
+		};
+
+		// ====== Capture Visit Notes (separate Bug & Feature lists) ======
+		let visitNotes = { bugs: [], features: [], remarks: '' };
+
+		const odooBtnMarkup =
+			'<button type="button" class="vn-odoo-btn" onclick="sendViaEmail(this)">' +
+				'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>' +
+				'Send via email' +
+			'</button>';
+
+		const bugMarkup =
+			'<div class="vn-item-head">' +
+				'<span class="vn-item-title">Bug</span>' +
+				'<div class="vn-item-actions">' +
+					odooBtnMarkup +
+					'<button type="button" class="vn-entry-remove" onclick="removeVisitItem(this, \'vnBugs\', \'Bug\')">✕ Remove</button>' +
+				'</div>' +
+			'</div>' +
+			'<div class="vn-entry-grid">' +
+				'<div class="vn2-field">' +
+					'<label><span class="dot amber"></span> Bug Notes</label>' +
+					'<textarea class="vn-bug-notes" placeholder="Describe the bug…"></textarea>' +
+				'</div>' +
+				'<div class="vn2-field">' +
+					'<label><span class="dot amber"></span> Bug Ticket No</label>' +
+					'<input class="vn-bug-ticket" type="text" placeholder="e.g. 12345" />' +
+					'<p class="vn2-hint">Linked tracking reference</p>' +
+				'</div>' +
+			'</div>';
+
+		const featureMarkup =
+			'<div class="vn-item-head">' +
+				'<span class="vn-item-title">Feature</span>' +
+				'<div class="vn-item-actions">' +
+					odooBtnMarkup +
+					'<button type="button" class="vn-entry-remove" onclick="removeVisitItem(this, \'vnFeatures\', \'Feature\')">✕ Remove</button>' +
+				'</div>' +
+			'</div>' +
+			'<div class="vn-entry-grid">' +
+				'<div class="vn2-field">' +
+					'<label><span class="dot"></span> Feature</label>' +
+					'<textarea class="vn-feature" placeholder="Describe the feature…"></textarea>' +
+				'</div>' +
+				'<div class="vn2-field">' +
+					'<label><span class="dot"></span> Feature Ticket No</label>' +
+					'<input class="vn-feature-ticket" type="text" placeholder="e.g. 12345" />' +
+					'<p class="vn2-hint">Linked tracking reference</p>' +
+				'</div>' +
+			'</div>';
+
+		// Show the "Send via email" button only when the item has some value
+		function wireOdooToggle(item)
+		{
+			const odoo = item.querySelector('.vn-odoo-btn');
+			const fields = item.querySelectorAll('textarea, input');
+			const update = () =>
+			{
+				const hasValue = Array.prototype.some.call(fields, f => f.value.trim() !== '');
+				odoo.style.display = hasValue ? '' : 'none';
+			};
+			fields.forEach(f => f.addEventListener('input', update));
+			update();
+		}
+
+		// ====== Send via email (server relay) ======
+		const VISIT_NOTES_EMAIL = 'wecare@vawsum.com';   // recipient
+		const VISIT_NOTE_EMAIL_URL = 'https://institution.vawsum.com/Emailed/callSendEmail';
+		const SCHOOL_ID = 2156100;
+
+		let pendingEmail = null;   // { subject, body } captured when the button is clicked
+
+		const isValidEmail = (e) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+		// POST the captured visit-note email to the backend relay. Returns { ok, message }.
+		const postVisitNoteEmail = (fromEmail) =>
+		{
+			const mailBody = (pendingEmail ? pendingEmail.body : '') + '<br><br>Submitted by: ' + fromEmail;
+			const payload = {
+				schoolId: SCHOOL_ID,
+				sendTo: VISIT_NOTES_EMAIL,
+				subject: pendingEmail ? pendingEmail.subject : 'Visit Notes',
+				mailBody: mailBody
+			};
+
+			return fetch(VISIT_NOTE_EMAIL_URL, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			})
+			.then(r => r.json().catch(() => ({})))
+			.then(res => ({
+				ok: !!(res && (res.IsOk === true || res.isOk === true)),
+				message: (res && (res.Message || res.message)) || ''
+			}));
+		};
+
+		// Build this item's email content, then either send straight away
+		// (if we already know the sender) or ask for the email the first time.
+		const sendViaEmail = (btn) =>
+		{
+			const item = btn.closest('.vn-item');
+			if (!item) return;
+
+			let subject, body;
+			if (item.querySelector('.vn-bug-notes'))
+			{
+				const notes = item.querySelector('.vn-bug-notes').value.trim();
+				const ticket = item.querySelector('.vn-bug-ticket').value.trim();
+				subject = 'Bug Report' + (ticket ? ' - Ticket ' + ticket : '') + (leadName ? ' - ' + leadName : '');
+				body = 'Lead: ' + (leadName || '-') + '<br><br>'
+					+ '<b>Bug Notes:</b><br>' + (notes || '-') + '<br><br>'
+					+ '<b>Bug Ticket No:</b> ' + (ticket || '-');
+			}
+			else
+			{
+				const desc = item.querySelector('.vn-feature').value.trim();
+				const ticket = item.querySelector('.vn-feature-ticket').value.trim();
+				subject = 'Feature Request' + (ticket ? ' - Ticket ' + ticket : '') + (leadName ? ' - ' + leadName : '');
+				body = 'Lead: ' + (leadName || '-') + '<br><br>'
+					+ '<b>Feature:</b><br>' + (desc || '-') + '<br><br>'
+					+ '<b>Feature Ticket No:</b> ' + (ticket || '-');
+			}
+
+			pendingEmail = { subject, body };
+
+			const savedEmail = (localStorage.getItem('VISIT_NOTES_SENDER') || '').trim();
+
+			// Already have the sender's email → send directly, no popup
+			if (isValidEmail(savedEmail))
+			{
+				const original = btn.innerHTML;
+				btn.disabled = true;
+				btn.textContent = 'Sending…';
+				postVisitNoteEmail(savedEmail)
+					.then(r =>
+					{
+						btn.disabled = false;
+						if (r.ok)
+						{
+							btn.textContent = '✓ Sent';
+						}
+						else
+						{
+							btn.innerHTML = original;
+							setMsg(r.message || 'Failed to send email', 'danger');
+						}
+					})
+					.catch(e =>
+					{
+						btn.disabled = false;
+						btn.innerHTML = original;
+						setMsg('Error sending email: ' + e.message, 'danger');
+					});
+				return;
+			}
+
+			// First time → ask for the email once
+			document.getElementById('emailErr').style.display = 'none';
+			document.getElementById('emailFrom').value = savedEmail;
+			document.getElementById('emailModal').classList.add('vn-open');
+			document.getElementById('emailFrom').focus();
+		};
+
+		const closeEmailModal = () =>
+		{
+			document.getElementById('emailModal').classList.remove('vn-open');
+		};
+
+		// First-time popup: validate, remember the email, then send
+		const submitEmail = () =>
+		{
+			const fromInput = document.getElementById('emailFrom');
+			const fromEmail = fromInput.value.trim();
+			const err = document.getElementById('emailErr');
+
+			if (!isValidEmail(fromEmail))
+			{
+				err.style.display = 'block';
+				fromInput.focus();
+				return;
+			}
+			err.style.display = 'none';
+			localStorage.setItem('VISIT_NOTES_SENDER', fromEmail);   // remembered for next time
+
+			const sendBtn = document.getElementById('emailSendBtn');
+			sendBtn.disabled = true;
+			sendBtn.textContent = 'Sending…';
+
+			postVisitNoteEmail(fromEmail)
+				.then(r =>
+				{
+					sendBtn.disabled = false;
+					sendBtn.textContent = 'Send';
+					if (r.ok)
+					{
+						closeEmailModal();
+						setMsg(r.message || ('Email sent to ' + VISIT_NOTES_EMAIL), 'success');
+					}
+					else
+					{
+						setMsg(r.message || 'Failed to send email', 'danger');
+					}
+				})
+				.catch(e =>
+				{
+					sendBtn.disabled = false;
+					sendBtn.textContent = 'Send';
+					setMsg('Error sending email: ' + e.message, 'danger');
+				});
+		};
+
+		function addBug(d)
+		{
+			d = d || {};
+			const div = document.createElement('div');
+			div.className = 'vn-item';
+			div.innerHTML = bugMarkup;
+			document.getElementById('vnBugs').appendChild(div);
+			div.querySelector('.vn-bug-notes').value = d.notes || '';
+			div.querySelector('.vn-bug-ticket').value = d.ticketNo || '';
+			wireOdooToggle(div);
+			renumberVisitItems('vnBugs', 'Bug');
+		}
+
+		function addFeature(d)
+		{
+			d = d || {};
+			const div = document.createElement('div');
+			div.className = 'vn-item';
+			div.innerHTML = featureMarkup;
+			document.getElementById('vnFeatures').appendChild(div);
+			div.querySelector('.vn-feature').value = d.desc || '';
+			div.querySelector('.vn-feature-ticket').value = d.ticketNo || '';
+			wireOdooToggle(div);
+			renumberVisitItems('vnFeatures', 'Feature');
+		}
+
+		function removeVisitItem(btn, containerId, label)
+		{
+			const items = document.querySelectorAll('#' + containerId + ' .vn-item');
+			if (items.length <= 1) return; // always keep at least one
+			const row = btn.closest('.vn-item');
+			if (row) { row.remove(); }
+			renumberVisitItems(containerId, label);
+		}
+
+		function renumberVisitItems(containerId, label)
+		{
+			const items = document.querySelectorAll('#' + containerId + ' .vn-item');
+			items.forEach((e, i) =>
+			{
+				e.querySelector('.vn-item-title').textContent = label + ' ' + (i + 1);
+				e.querySelector('.vn-entry-remove').style.display = items.length > 1 ? '' : 'none';
+			});
+		}
+
+		// Reset the modal to an empty state (one empty bug, one empty feature, no remarks)
+		const resetVisitNotes = () =>
+		{
+			document.getElementById('vnBugs').innerHTML = '';
+			document.getElementById('vnFeatures').innerHTML = '';
+			addBug({});
+			addFeature({});
+			document.getElementById('vnRemarks').value = '';
+			setVnMsg('');
+		};
+
+		const openVisitNotes = () =>
+		{
+			// Always open fresh (the data is saved server-side, not restored here)
+			resetVisitNotes();
+			document.getElementById('visitNotesModal').classList.add('vn-open');
+			document.body.style.overflow = 'hidden';
+		};
+
+		const closeVisitNotes = () =>
+		{
+			document.getElementById('visitNotesModal').classList.remove('vn-open');
+			document.body.style.overflow = '';
+		};
+
+		const collectVisitNotes = () =>
+		{
+			const bugs = [];
+			document.querySelectorAll('#vnBugs .vn-item').forEach(e =>
+			{
+				bugs.push({
+					notes: e.querySelector('.vn-bug-notes').value.trim(),
+					ticketNo: e.querySelector('.vn-bug-ticket').value.trim()
+				});
+			});
+			const features = [];
+			document.querySelectorAll('#vnFeatures .vn-item').forEach(e =>
+			{
+				features.push({
+					desc: e.querySelector('.vn-feature').value.trim(),
+					ticketNo: e.querySelector('.vn-feature-ticket').value.trim()
+				});
+			});
+			visitNotes = { bugs, features, remarks: document.getElementById('vnRemarks').value.trim() };
+			return visitNotes;
+		};
+
+		// const CREATE_VISIT_ACTIVITY_URL = "http://localhost:51450/api/Actions/CreateVisitActivity";
+		const CREATE_VISIT_ACTIVITY_URL = "https://management.trakkerz.com/api/Actions/CreateVisitActivity";
+		// const FETCH_VISIT_ACTIVITY_URL = "http://localhost:51450/api/Actions/FetchVisitActivity";
+		const FETCH_VISIT_ACTIVITY_URL = "https://management.trakkerz.com/api/Actions/FetchVisitActivity";
+
+		let isSavingVisitNotes = false;
+
+		// Small status line shown inside the modal footer (the page #msg sits behind the overlay)
+		const setVnMsg = (text, type) =>
+		{
+			const el = document.getElementById('vnMsg');
+			if (!el) return;
+			el.textContent = text || '';
+			el.style.color = type === 'danger' ? '#dc2626' : (type === 'success' ? '#2e7d32' : 'var(--ink-faint)');
+		};
+
+		const saveVisitNotes = (alsoPrint) =>
+		{
+			if (isSavingVisitNotes) return;
+
+			const data = collectVisitNotes();
+
+			const now = new Date();
+			const pad = (n) => String(n).padStart(2, '0');
+			const dateOnly = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+			const dateTime = dateOnly + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+
+			const payload = {
+				Lead_Id: parseInt(leadId, 10) || 0,
+				Person_Id: parseInt(personId, 10) || 0,
+				Institution_Name: leadName || '',
+				Visitor_Name: (localStorage.getItem('USER_VISITOR_NAME') || personName || '').trim(),
+				Reviewed_By: parseInt(personId, 10) || 0,
+				Date_Of_Visit: dateOnly,
+				Location: '',
+				Reviewed_On: dateTime,
+				Remarks: data.remarks || '',
+				Created_By: parseInt(personId, 10) || 0,
+				Bugs: (data.bugs || [])
+					.filter(b => b.notes || b.ticketNo)
+					.map(b => ({ Bug_Notes: b.notes, Bug_Ticket_No: b.ticketNo })),
+				Features: (data.features || [])
+					.filter(f => f.desc || f.ticketNo)
+					.map(f => ({ Feature_Notes: f.desc, Feature_Ticket_No: f.ticketNo }))
+			};
+
+			isSavingVisitNotes = true;
+			setVnMsg('Saving…', 'info');
+
+			promisingAjaxCall(CREATE_VISIT_ACTIVITY_URL, 'POST', JSON.stringify(payload), 'application/json')
+			.then(res =>
+			{
+				isSavingVisitNotes = false;
+				if (res && (res.isOk === true || res.IsOk === true))
+				{
+					const newId = extractVisitActivityId(res);
+						resetVisitNotes();      // clear the modal fields after a successful save
+					closeVisitNotes();
+					setMsg((res.message || res.Message) || 'Visit activity saved', 'success');
+
+					if (alsoPrint)
+					{
+						if (newId) { fetchAndPrintVisitActivity(newId); }
+						else { printVisitNotes(data); }
+					}
+				}
+				else
+				{
+					setVnMsg((res && (res.message || res.Message)) || 'Failed to save visit activity', 'danger');
+				}
+			})
+			.catch(err =>
+			{
+				isSavingVisitNotes = false;
+				setVnMsg('Error: ' + err.message, 'danger');
+			});
+		};
+
+		const printVisitNotes = (data) =>
+		{
+			const esc = (s) => String(s == null || s === '' ? '-' : s)
+				.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+			const bugs = (data.bugs && data.bugs.length) ? data.bugs : [{}];
+			const features = (data.features && data.features.length) ? data.features : [{}];
+			let body = '<h2 style="margin:18px 0 8px;font-size:15px;color:#1a1d24;">Bugs</h2>';
+			bugs.forEach((b, i) =>
+			{
+				body +=
+					'<h3 style="margin:14px 0 8px;font-size:13px;color:#3a5a40;">Bug ' + (i + 1) + '</h3>' +
+					'<div class="row">' +
+						'<div class="field"><div class="lbl">Bug Notes</div><div class="val">' + esc(b.notes) + '</div></div>' +
+						'<div class="field" style="max-width:200px;"><div class="lbl">Bug Ticket No</div><div class="val">' + esc(b.ticketNo) + '</div></div>' +
+					'</div>';
+			});
+			body += '<h2 style="margin:22px 0 8px;font-size:15px;color:#1a1d24;">Features</h2>';
+			features.forEach((f, i) =>
+			{
+				body +=
+					'<h3 style="margin:14px 0 8px;font-size:13px;color:#3a5a40;">Feature ' + (i + 1) + '</h3>' +
+					'<div class="row">' +
+						'<div class="field"><div class="lbl">Feature</div><div class="val">' + esc(f.desc) + '</div></div>' +
+						'<div class="field" style="max-width:200px;"><div class="lbl">Feature Ticket No</div><div class="val">' + esc(f.ticketNo) + '</div></div>' +
+					'</div>';
+			});
+
+			const w = window.open('', '_blank', 'width=800,height=900');
+			if (!w) { setMsg('Pop-up blocked. Allow pop-ups to print.', 'warning'); return; }
+
+			w.document.write(
+				'<!doctype html><html><hea' + 'd><meta charset="utf-8"><title>Visit Notes</title>' +
+				'<style>' +
+				'body{font-family:Segoe UI,Arial,sans-serif;color:#1f2937;margin:0;padding:32px;}' +
+				'.hd{background:linear-gradient(135deg,#3a5a40,#2d4732);color:#fff;padding:20px 24px;border-radius:12px;margin-bottom:8px;}' +
+				'.hd h1{margin:0;font-size:20px;}' +
+				'.hd p{margin:4px 0 0;opacity:.9;font-size:13px;}' +
+				'.row{display:flex;gap:16px;margin-bottom:16px;}' +
+				'.field{flex:1;border:1px solid #e5e7eb;border-radius:10px;padding:12px 14px;}' +
+				'.field .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#6b7280;font-weight:600;margin-bottom:6px;}' +
+				'.field .val{font-size:14px;white-space:pre-wrap;word-break:break-word;}' +
+				'.full{width:100%;}' +
+				'@media print{body{padding:16px;} .hd{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}' +
+				'</style></hea' + 'd><bo' + 'dy>' +
+				'<div class="hd"><h1>📝 Visit Notes</h1><p>Lead: ' + esc(leadName || '-') + ' &nbsp;•&nbsp; ' + esc(activityType) + ' / ' + esc(selectedItem) + '</p></div>' +
+				body +
+				'<div class="row"><div class="field full"><div class="lbl">Remarks</div><div class="val">' + esc(data.remarks) + '</div></div></div>' +
+				'</bo' + 'dy></htm' + 'l>'
+			);
+			w.document.close();
+			w.focus();
+			setTimeout(() => { w.print(); }, 300);
+		};
+
+		const extractVisitActivityId = (res) =>
+		{
+			if (!res) return null;
+			const ro = res.ResponseObject;
+			if (typeof ro === 'number') return ro;
+			if (typeof ro === 'string' && ro.trim() !== '' && !isNaN(ro)) return parseInt(ro, 10);
+			if (Array.isArray(ro) && ro.length) return ro[0].Id || ro[0].id || ro[0].VisitActivityId || null;
+			if (ro && typeof ro === 'object') return ro.Id || ro.id || ro.VisitActivityId || null;
+			if (res.Id || res.id || res.VisitActivityId) return res.Id || res.id || res.VisitActivityId;
+			return null;
+		};
+
+		// Fetch the saved visit activity by id, then print it
+		const fetchAndPrintVisitActivity = (id) =>
+		{
+			promisingAjaxCall(FETCH_VISIT_ACTIVITY_URL, 'POST', JSON.stringify({ VisitActivityId: id }), 'application/json')
+			.then(res =>
+			{
+				if (res && (res.IsOk === true || res.isOk === true) && Array.isArray(res.ResponseObject) && res.ResponseObject.length)
+				{
+					printVisitActivity(res.ResponseObject[0]);
+				}
+				else
+				{
+					setMsg('Saved, but could not load the record for printing', 'warning');
+				}
+			})
+			.catch(err => setMsg('Saved, but print fetch failed: ' + err.message, 'warning'));
+		};
+
+		// Print a fetched VisitActivity record in the official VISIT REPORT format
+		const VAWSUM_LOGO = 'https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp';
+		const VAWSUM_CIN = 'U74999WB2018PTC215724';
+
+		const printVisitActivity = (rec) =>
+		{
+			const esc = (s) => String(s == null || s === '' ? '' : s)
+				.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+			// Visitor name comes from the OTP-verified person (null/empty parts already skipped)
+			const visitorName = (localStorage.getItem('USER_VISITOR_NAME') || '').trim() || (rec.Visitor_Name || '');
+			// Location shows the selected lead's address
+			const leadAddress = (localStorage.getItem('SELECTED_LEAD_ADDRESS') || '').trim() || (rec.Location || '');
+
+			const bugs = Array.isArray(rec.Bugs) ? rec.Bugs : [];
+			const features = Array.isArray(rec.Features) ? rec.Features : [];
+
+			const listHtml = (arr, noteKey, ticketKey) =>
+			{
+				if (!arr.length) return '';
+				return arr.map((it, i) =>
+					'<div class="entry"><span class="n">' + (i + 1) + '.</span> ' + esc(it[noteKey]) +
+					(it[ticketKey] ? ' <span class="tk">[' + esc(it[ticketKey]) + ']</span>' : '') + '</div>'
+				).join('');
+			};
+
+			const bugHtml = listHtml(bugs, 'Bug_Notes', 'Bug_Ticket_No');
+			const featHtml = listHtml(features, 'Feature_Notes', 'Feature_Ticket_No');
+
+			const w = window.open('', '_blank', 'width=820,height=1000');
+			if (!w) { setMsg('Pop-up blocked. Allow pop-ups to print.', 'warning'); return; }
+
+			w.document.write(
+				'<!doctype html><html><hea' + 'd><meta charset="utf-8"><title>Visit Report</title>' +
+				'<style>' +
+				'*{box-sizing:border-box;}' +
+				'body{font-family:Arial,Helvetica,sans-serif;color:#000;margin:0;padding:26px 32px;}' +
+				'.topbar{display:flex;justify-content:flex-end;align-items:flex-start;margin-bottom:6px;}' +
+				'.logo img{height:40px;}' +
+				'.cin{font-size:10px;color:#444;text-align:right;}' +
+				'.title{text-align:center;font-size:18px;font-weight:bold;text-decoration:underline;letter-spacing:1px;margin:4px 0 16px;}' +
+				'table{border-collapse:collapse;width:100%;}' +
+				'.info td{border:1px solid #000;padding:9px 10px;font-size:12px;vertical-align:middle;}' +
+				'.info .k{font-weight:bold;text-transform:uppercase;width:17%;}' +
+				'.info .v{width:33%;}' +
+				'.grid{margin-top:16px;table-layout:fixed;}' +
+				'.grid th{background:#333;color:#fff;border:1px solid #000;padding:9px;font-size:12px;letter-spacing:.5px;}' +
+				'.grid td{border:1px solid #000;vertical-align:top;height:420px;padding:12px 14px;font-size:12px;width:50%;}' +
+				'.entry{margin-bottom:9px;line-height:1.45;}' +
+				'.entry .n{font-weight:bold;}' +
+				'.entry .tk{color:#2d4732;font-weight:bold;}' +
+				'.sign{margin-top:24px;font-size:13px;}' +
+				'.sign p{margin:0 0 18px;}' +
+				'.footer{margin-top:34px;text-align:center;font-size:10.5px;color:#333;line-height:1.55;}' +
+				'.footer strong{font-size:12px;color:#000;}' +
+				'@media print{body{padding:16px 22px;} .grid th{-webkit-print-color-adjust:exact;print-color-adjust:exact;}}' +
+				'</style></hea' + 'd><bo' + 'dy>' +
+
+				'<div class="topbar">' +
+					'<div class="cin">CIN: ' + VAWSUM_CIN + '</div>' +
+				'</div>' +
+
+				'<div class="title">VISIT REPORT</div>' +
+
+				'<table class="info"><tbody>' +
+					'<tr>' +
+						'<td class="k">Institution Name</td><td class="v">' + esc(rec.Institution_Name) + '</td>' +
+						'<td class="k">Date of Visit</td><td class="v">' + esc(rec.Date_Of_Visit) + '</td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td class="k">Visitor Name</td><td class="v">' + esc(visitorName) + '</td>' +
+						'<td class="k">Location</td><td class="v">' + esc(leadAddress) + '</td>' +
+					'</tr>' +
+					'<tr>' +
+						'<td class="k">Reviewed By</td><td class="v"></td>' +
+						'<td class="k">Reviewed On</td><td class="v"></td>' +
+					'</tr>' +
+				'</tbody></table>' +
+
+				'<table class="grid"><thead><tr>' +
+					'<th>BUGS NOTED</th><th>FEATURES REQUESTED</th>' +
+				'</tr></thead><tbody><tr>' +
+					'<td>' + bugHtml + '</td>' +
+					'<td>' + featHtml + '</td>' +
+				'</tr></tbody></table>' +
+
+				(rec.Remarks ? '<div style="margin-top:12px;font-size:12px;"><b>Remarks:</b> ' + esc(rec.Remarks) + '</div>' : '') +
+
+				'<div class="sign">' +
+					'<p>Date:</p>' +
+					'<p>Exec. Signature:</p>' +
+				'</div>' +
+
+				'<div class="footer">' +
+					'<strong>Vawsum Schools Pvt. Ltd</strong><br>' +
+					'24, Hemanta Basu Sarani, Suite 309, Mangalam Apt. Block-A, Kolkata – 700 001<br>' +
+					'Call: +91 8820088000 | E-Mail: info@vawsum.com | Web: www.vawsum.com' +
+				'</div>' +
+
+				'</bo' + 'dy></htm' + 'l>'
+			);
+			w.document.close();
+			w.focus();
+			setTimeout(() => { w.print(); }, 350);
+		};
+
+		// Save Activity
+		let isSaving = false;
+
+		const saveActivity = () =>
+		{
+			if (isSaving) return;
+
+			isSaving = true;
+			const fabBtn = document.getElementById('fabAddActivity');
+			fabBtn.disabled = true;
+			setMsg('Saving activity...');
+
+			const { params, values } = buildActivityPayload();
+			const dataString = createJSON(params, values);
+
+			const url = "https://management.trakkerz.com/api/Actions/PerformAction";
+
+			promisingAjaxCall(url, 'POST', dataString, 'application/x-www-form-urlencoded')
+			.then(res =>
+			{
+				if (res && (res.isOk === true || res.IsOk === true))
+				{
+					setMsg('Activity added successfully', 'success');
+					setTimeout(() =>
+					{
+						window.location.href = 'leads.html';
+					}, 1500);
+				}
+				else
+				{
+					setMsg((res && (res.message || res.Message)) || 'Failed to add activity', 'danger');
+					isSaving = false;
+					fabBtn.disabled = false;
+				}
+			})
+			.catch(err =>
+			{
+				setMsg(`Error: ${err.message}`, 'danger');
+				isSaving = false;
+				fabBtn.disabled = false;
+			});
+		};
+
+		// Back button handler
+		const goBack = () =>
+		{
+			window.location.href = 'leads.html';
+		};
+
+		// INIT
+		(() =>
+		{
+			applyStatusDisableIfDoneNonAdmin();
+			showBlocks();
+			initRatingHandler();
+			initAssigneeSearch();
+			initFileInput();
+			document.getElementById('tvLeadName').textContent = leadName || '';
+		})();
+	</script>
+</body>
+
+</html>

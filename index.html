@@ -1,0 +1,577 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>OTP Login</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="shortcut icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="apple-touch-icon" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<style>
+		body 
+		{
+			background: #f7f9fc;
+		}
+
+		.card 
+		{
+			border-radius: 16px;
+			box-shadow: 0 10px 24px rgba(0, 0, 0, 0.06);
+		}
+
+		.btn-primary:disabled 
+		{
+			opacity: .65;
+		}
+
+		#verifyView 
+		{
+			display: none;
+		}
+
+		.small-link 
+		{
+			cursor: pointer;
+		}
+
+		.logo 
+		{
+			width: 70px;
+			height: 70px;
+			object-fit: contain;
+			display: block;
+			margin: 0 auto;
+			filter: brightness(1) contrast(1.1) saturate(1.1);
+			image-rendering: -webkit-optimize-contrast;
+			image-rendering: crisp-edges;
+			opacity: 1;
+		}
+
+		#btnRequest 
+		{
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			border: none !important;
+			color: white !important;
+			font-weight: 600;
+			transition: all 0.2s;
+		}
+
+		#btnRequest:hover 
+		{
+			transform: translateY(-3px) !important;
+			box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			color: white !important;
+		}
+
+		#btnRequest:active 
+		{
+			transform: translateY(-1px) !important;
+		}
+
+		#btnRequest:disabled 
+		{
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		#btnVerify 
+		{
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			border: none !important;
+			color: white !important;
+			font-weight: 600;
+			transition: all 0.2s;
+		}
+
+		#btnVerify:hover 
+		{
+			transform: translateY(-3px) !important;
+			box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5);
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+			color: white !important;
+		}
+
+		#btnVerify:active 
+		{
+			transform: translateY(-1px) !important;
+		}
+
+		#btnVerify:disabled 
+		{
+			opacity: 0.6;
+			cursor: not-allowed;
+		}
+
+		/* Responsive Styles */
+		@media (max-width: 768px) {
+			.container {
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+			
+			.card {
+				margin-top: 20px;
+				padding: 1.5rem !important;
+			}
+			
+			.logo {
+				width: 65px;
+				height: 65px;
+			}
+			
+			h5 {
+				font-size: 1.1rem;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.card {
+				padding: 1rem !important;
+			}
+			
+			.logo {
+				width: 60px;
+				height: 60px;
+			}
+			
+			h5 {
+				font-size: 1rem;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container py-5">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-6 col-lg-5">
+				<div class="card p-4 p-md-5">
+					<div class="text-center mb-4">
+						<img src="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" class="logo" alt="Logo" />
+						<h5 class="mt-4 mb-0" style="color:#2b6cb0; font-weight: 600;">Secure Login</h5>
+					</div>
+					<div id="enterView">
+						<div class="form-group">
+							<label for="mobile">Enter Mobile Number</label>
+							<input type="tel" id="mobile" class="form-control form-control-lg text-center"
+								placeholder="10-digit mobile" maxlength="11" />
+						</div>
+						<button id="btnRequest" class="btn btn-lg btn-block">Next</button>
+					</div>
+					<div id="verifyView">
+						<div class="text-muted small mb-2" id="otpSentTo"></div>
+						<div class="form-group">
+							<label for="otp">Enter OTP</label>
+							<input type="tel" id="otp" class="form-control form-control-lg text-center" placeholder="OTP"
+								maxlength="15" />
+						</div>
+						<button id="btnVerify" class="btn btn-lg btn-block">Submit</button>
+						<div class="text-center mt-3">
+							<span id="btnResend" class="small-link text-primary">Resend OTP</span>
+						</div>
+					</div>
+					<div id="msg" class="mt-3"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		"use strict";
+		// let BASE_URL = "https://example.com/api/";
+		let ENDPOINTS =
+		{
+			requestOTP: "auth/requestOTP",
+			verifyOTP: "auth/verifyOTP"
+		};
+		let isRequestClicked = false;
+		let isVerifyClicked = false;
+		let isResendClicked = false;
+
+		function setMsg(text, type) 
+		{
+			let m = document.getElementById("msg");
+			m.className = "mt-3 alert alert-" + (type || "info");
+			m.textContent = text || "";
+		}
+
+		function createJSON(params, values) 
+		{
+			let o = {};
+			for (let i = 0; i < params.length; i++) 
+			{
+				o[params[i]] = values[i];
+			}
+			return JSON.stringify(o);
+		}
+
+		function promisingAjaxCall(url, method, dataString, contentType) 
+		{
+			return new Promise(function (resolve, reject) 
+			{
+				let xhr = new XMLHttpRequest();
+				xhr.open(method, url, true);
+				xhr.setRequestHeader("Content-Type", contentType || "application/json");
+
+				xhr.onreadystatechange = function () 
+				{
+					if (xhr.readyState === 4) 
+					{
+						if (xhr.status >= 200 && xhr.status < 300) 
+						{
+							try 
+							{
+								let json = JSON.parse(xhr.responseText);
+								resolve(json);
+							}
+							catch (e) 
+							{
+								reject(new Error("Invalid JSON response"));
+							}
+						}
+						else {
+							reject(new Error("HTTP " + xhr.status));
+						}
+					}
+				};
+
+				xhr.onerror = function () 
+				{
+					reject(new Error("Network error"));
+				};
+
+				xhr.send(dataString);
+			});
+		}
+
+		function validMobile(m) 
+		{
+			let onlyDigits = /^\d+$/;
+			if (!onlyDigits.test(m)) 
+			{
+				return false;
+			}
+			if (m.length === 10) 
+			{
+				return true;
+			}
+			if (m.startsWith("5") && m.length === 11) 
+			{
+				return true;
+			}
+			return false;
+		}
+
+		function disable(el, v) 
+		{
+			el.disabled = !!v;
+		}
+
+		function showView(view) 
+		{
+			let enter = document.getElementById("enterView");
+			let verify = document.getElementById("verifyView");
+			if (view === "verify") 
+			{
+				enter.style.display = "none";
+				verify.style.display = "block";
+			}
+			else 
+			{
+				enter.style.display = "block";
+				verify.style.display = "none";
+			}
+		}
+
+		function requestOTP() 
+		{
+			let mobile = document.getElementById("mobile").value.trim();
+
+			if (!validMobile(mobile)) 
+			{
+				setMsg("Please enter a valid mobile number", "warning");
+				return;
+			}
+
+			if (isRequestClicked) 
+			{
+				return;
+			}
+
+			isRequestClicked = true;
+
+			let url = "https://trakkerz.trakkerz.com/api/Persons/OTPLogin";
+
+			let params = ["mobile"];
+			let values = [mobile];
+
+			let dataString = createJSON(params, values);
+
+			disable(document.getElementById("btnRequest"), true);
+			setMsg("Requesting OTP...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/json")
+				.then(function (res) 
+				{
+					if (res && (res.isOk === true || res.IsOk === true)) 
+					{
+						localStorage.setItem("USER_MOBILE_NUMBER", mobile);
+						document.getElementById("otpSentTo").textContent = "OTP sent to: " + mobile;
+						showView("verify");
+						setMsg("OTP sent successfully", "success");
+					}
+					else 
+					{
+						setMsg((res && (res.message || res.Message)) || "Failed to request OTP", "danger");
+						isRequestClicked = false;
+						disable(document.getElementById("btnRequest"), false);
+					}
+				})
+				.catch(function (err) 
+				{
+					setMsg("Error: " + err.message, "danger");
+					isRequestClicked = false;
+					disable(document.getElementById("btnRequest"), false);
+				});
+		}
+
+		function resendOTP() 
+		{
+			if (isResendClicked) 
+			{
+				return;
+			}
+
+			let mobile = localStorage.getItem("USER_MOBILE_NUMBER") || document.getElementById("mobile").value.trim();
+			if (!validMobile(mobile)) 
+			{
+				setMsg("Please enter a valid mobile number", "warning");
+				return;
+			}
+
+			isResendClicked = true;
+
+			document.getElementById("btnResend").classList.add("text-muted");
+
+			let url = "https://trakkerz.trakkerz.com/api/Persons/OTPLogin";
+
+			let params = ["mobile"];
+			let values = [mobile];
+
+			let dataString = createJSON(params, values);
+			setMsg("Resending OTP...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/json")
+				.then(function (res) 
+				{
+					console.log(res);
+					if (res && (res.isOk === true || res.IsOk === true)) 
+					{
+						setMsg("OTP resent", "success");
+					}
+					else 
+					{
+						setMsg((res && (res.message || res.Message)) || "Failed to resend OTP", "danger");
+						isResendClicked = false;
+						document.getElementById("btnResend").classList.remove("text-muted");
+					}
+				})
+				.catch(function (err) 
+				{
+					setMsg("Error: " + err.message, "danger");
+					isResendClicked = false;
+					document.getElementById("btnResend").classList.remove("text-muted");
+				});
+		}
+
+		const verifyOTP = () => 
+		{
+			debugger;
+			if (isVerifyClicked) return;
+
+			const mobile = document.getElementById("mobile").value.trim();
+			const otp = document.getElementById("otp").value.trim();
+			if (!validMobile(mobile) || otp.length === 0) 
+			{
+				setMsg("Please enter a valid mobile and OTP", "warning");
+				return;
+			}
+
+			isVerifyClicked = true;
+			disable(document.getElementById("btnVerify"), true);
+
+			const url = "https://trakkerz.trakkerz.com/api/Persons/VerifyOTP";
+
+			const params = ["mobile", "otp"];
+			const values = [mobile, otp];
+
+			const dataString = createJSON(params, values);
+			setMsg("Verifying OTP...");
+
+			promisingAjaxCall(url, "POST", dataString, "application/json")
+				.then(res => 
+				{
+					if (res && (res.isOk === true || res.IsOk === true)) 
+					{
+						setMsg("Fetching user information...", "info");
+
+						const personId = res.ResponseObject?.person?.PersonId || res.ResponseObject?.PersonId;
+
+						// Store the verified person's name (skip any null/empty part)
+						const vp = res.ResponseObject?.person || {};
+						const vFirst = (vp.FirstName || "").trim();
+						const vMiddle = (vp.MiddleName || "").trim();
+						const vLast = (vp.LastName || "").trim();
+						localStorage.setItem("VISITOR_FIRST_NAME", vFirst);
+						localStorage.setItem("VISITOR_MIDDLE_NAME", vMiddle);
+						localStorage.setItem("VISITOR_LAST_NAME", vLast);
+						localStorage.setItem("USER_VISITOR_NAME", [vFirst, vMiddle, vLast].filter(Boolean).join(" "));
+
+						if (personId)
+						{
+							fetchUserInfo(personId);
+							fetchGetAllGroupDetailsByPersonId(personId);
+						}
+						else 
+						{
+							setMsg("PersonId not found in response", "danger");
+							isVerifyClicked = false;
+							disable(document.getElementById("btnVerify"), false);
+						}
+					}
+					else 
+					{
+						setMsg((res && (res.message || res.Message)) || "Invalid OTP", "danger");
+						isVerifyClicked = false;
+						disable(document.getElementById("btnVerify"), false);
+						isResendClicked = false;
+						document.getElementById("btnResend").classList.remove("text-muted");
+					}
+				})
+				.catch(err => 
+				{
+					setMsg(`Error: ${err.message}`, "danger");
+					isVerifyClicked = false;
+					disable(document.getElementById("btnVerify"), false);
+				});
+		};
+
+		const fetchUserInfo = (personId) => 
+		{
+			const url = "https://trakkerz.trakkerz.com/api/Persons/GetAllInformationByPersonId";
+
+			const params = ["PersonId"];
+			const values = [personId];
+
+			const dataString = createJSON(params, values);
+
+			promisingAjaxCall(url, "POST", dataString, "application/json")
+				.then(res => 
+				{
+					if (res && (res.isOk === true || res.IsOk === true)) 
+					{
+						// Store user information
+						localStorage.setItem("USER_PERSON_ID", personId);
+						localStorage.setItem("USER_FIRST_NAME", res.ResponseObject?.FirstName || "");
+						localStorage.setItem("USER_LAST_NAME", res.ResponseObject?.LastName || "");
+						localStorage.setItem("USER_MOBILE", res.ResponseObject?.Mobile || "");
+
+						// Groups will be fetched by fetchGetAllGroupDetailsByPersonId
+						setMsg("User info fetched", "success");
+					}
+					else 
+					{
+						setMsg((res && (res.message || res.Message)) || "Failed to fetch user info", "danger");
+						isVerifyClicked = false;
+						disable(document.getElementById("btnVerify"), false);
+					}
+				})
+				.catch(err => 
+				{
+					console.error("Error fetching user info:", err);
+				});
+		};
+
+		const fetchGetAllGroupDetailsByPersonId = (personId) => 
+		{
+			const url = "https://trakkerz.trakkerz.com/api/PersonsToGroups/GetAllGroupDetailsByPersonId";
+
+			const params = ["PersonId"];
+			const values = [personId];
+
+			const dataString = createJSON(params, values);
+
+			console.log("Fetching group details for PersonId:", personId);
+
+			promisingAjaxCall(url, "POST", dataString, "application/json")
+				.then(res => 
+				{
+					console.log("GetAllGroupDetailsByPersonId Response:", res);
+					
+					if (res && (res.IsOk === true || res.isOk === true)) 
+					{
+						const groupList = res.ResponseObject || [];
+						
+						if (groupList.length > 0) 
+						{
+							const firstGroup = groupList[0];
+							
+							// Store group information
+							localStorage.setItem("USER_GROUP_ID", firstGroup.GroupId || "");
+							localStorage.setItem("USER_INSTITUTION_ID", firstGroup.InstitutionId || "");
+							localStorage.setItem("USER_ROUTE_ID", firstGroup.RouteId || "");
+							localStorage.setItem("USER_GROUP_NAME", firstGroup.GroupName || "");
+							localStorage.setItem("USER_PERSON_TYPE", firstGroup.PersonType || "");
+							
+							// Store the full group list as JSON
+							localStorage.setItem("savedGroupList", JSON.stringify(groupList));
+
+							setMsg("Login successful", "success");
+							setTimeout(() => 
+							{
+								window.location.href = "groups.html";
+							}, 1000);
+						}
+						else 
+						{
+							setMsg("No groups found", "warning");
+							isVerifyClicked = false;
+							disable(document.getElementById("btnVerify"), false);
+						}
+					}
+					else 
+					{
+						setMsg((res && (res.Message || res.message)) || "Failed to fetch group details", "danger");
+						isVerifyClicked = false;
+						disable(document.getElementById("btnVerify"), false);
+					}
+				})
+				.catch(err => 
+				{
+					setMsg(`Error fetching group details: ${err.message}`, "danger");
+					isVerifyClicked = false;
+					disable(document.getElementById("btnVerify"), false);
+				});
+		};
+
+		document.getElementById("btnRequest").addEventListener("click", function () 
+		{
+			requestOTP();
+		});
+
+		document.getElementById("btnVerify").addEventListener("click", function () 
+		{
+			verifyOTP();
+		});
+
+		document.getElementById("btnResend").addEventListener("click", function () 
+		{
+			resendOTP();
+		});
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Leads (Web)</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="shortcut icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="apple-touch-icon" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+	<style>
+		:root 
+		{
+			--ink: #0f172a;
+			--muted: #475569;
+			--brand: #2563eb;
+			--bg: #f8fafc;
+			--border: #e2e8f0
+		}
+
+		body 
+		{
+			background: var(--bg)
+		}
+
+		.app-header 
+		{
+			position: sticky;
+			top: 0;
+			z-index: 10;
+			background: #fff;
+			border-bottom: 1px solid var(--border)
+		}
+
+		.title 
+		{
+			font-weight: 700;
+			color: var(--ink)
+		}
+
+		.badge-soft 
+		{
+			background: #eef2ff;
+			color: #3730a3
+		}
+
+		#banner 
+		{
+			display: none
+		}
+
+			.lead-card 
+	{
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		background: #fff;
+		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+		transition: all 0.2s;
+	}
+
+	.lead-card:hover 
+	{
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		transform: translateY(-2px);
+	}
+
+	.lead-card+.lead-card 
+	{
+		margin-top: 12px
+	}
+
+			.avatar 
+	{
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		border: 2px solid #e2e8f0;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: #fff;
+		font-weight: 700;
+		font-size: 14px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s;
+		flex-shrink: 0;
+	}
+
+	.title-box 
+	{
+		flex: 1;
+		min-width: 0;
+	}
+
+	.title-box .name 
+	{
+		font-size: 1rem;
+		color: var(--ink);
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+
+	.title-box .sub 
+	{
+		font-size: 0.85rem;
+		margin-top: 2px;
+	}
+
+	.fab 
+	{
+		position: fixed;
+		right: 20px;
+		bottom: 20px;
+		width: 56px;
+		height: 56px;
+		border-radius: 999px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+		color: #fff !important;
+		box-shadow: 0 12px 24px rgba(102, 126, 234, 0.4);
+		border: 0 !important;
+		transition: all 0.2s;
+		cursor: pointer;
+	}
+
+	.fab:hover 
+	{
+		transform: translateY(-3px) !important;
+		box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
+	}
+
+	.fab:active 
+	{
+		transform: translateY(-1px) !important;
+	}
+
+	.empty 
+	{
+		padding: 24px;
+		border: 1px dashed var(--border);
+		border-radius: 12px;
+		background: #fff;
+		text-align: center;
+		color: var(--muted)
+	}
+
+	.cursor 
+	{
+		cursor: pointer
+	}
+
+	.btn-filter-refresh 
+	{
+		display: none
+	}
+
+	#btnAddLead 
+	{
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		color: white;
+		font-weight: 600;
+		transition: transform 0.2s, box-shadow 0.2s;
+	}
+
+	#btnAddLead:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	#btnAddLead:active 
+	{
+		transform: translateY(0);
+	}
+
+	#tvLeadCount 
+	{
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		color: white;
+		font-weight: 600;
+		font-size: 0.9rem;
+		padding: 8px 16px;
+	}
+
+	.btn-add-activity 
+	{
+		transition: all 0.2s;
+	}
+
+	.btn-add-activity:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+		border-color: transparent !important;
+		color: white !important;
+	}
+
+	.btn-add-activity:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-call 
+	{
+		transition: all 0.2s;
+	}
+
+	.btn-call:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+	}
+
+	.btn-call:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-open 
+	{
+		transition: all 0.2s;
+	}
+
+	.btn-open:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+	}
+
+	.btn-open:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-delete 
+	{
+		transition: all 0.2s;
+	}
+
+	.btn-delete:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+	}
+
+	.btn-delete:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-filter 
+	{
+		transition: all 0.2s;
+	}
+
+	.btn-filter:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+		border-color: transparent !important;
+		color: white !important;
+	}
+
+	.btn-filter:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-modal-apply 
+	{
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		color: white;
+		font-weight: 600;
+		padding: 8px 24px;
+		border-radius: 6px;
+		transition: all 0.2s;
+	}
+
+	.btn-modal-apply:hover 
+	{
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	.btn-modal-apply:active 
+	{
+		transform: translateY(0);
+	}
+
+	.btn-modal-cancel 
+	{
+		color: #64748b;
+		font-weight: 600;
+		padding: 8px 24px;
+		border-radius: 6px;
+		transition: all 0.2s;
+		text-decoration: none;
+	}
+
+	.btn-modal-cancel:hover 
+	{
+		background: #f1f5f9;
+		color: #475569;
+		transform: translateY(-1px);
+		text-decoration: none;
+	}
+
+	.btn-modal-cancel:active 
+	{
+		transform: translateY(0);
+	}
+
+	.modal-header-gradient 
+	{
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		padding: 1rem 1.5rem;
+	}
+
+	.modal-header-gradient .close 
+	{
+		opacity: 0.9;
+		transition: opacity 0.2s;
+	}
+
+	.modal-header-gradient .close:hover 
+	{
+		opacity: 1;
+		transform: scale(1.1);
+	}
+
+	.btn-primary:not(.btn-modal-apply):not(#btnAddLead) 
+	{
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		border: none;
+		color: white;
+		font-weight: 600;
+		transition: all 0.2s;
+	}
+
+	.btn-primary:not(.btn-modal-apply):not(#btnAddLead):hover 
+	{
+		transform: translateY(-2px) !important;
+		box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+		background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+		color: white;
+	}
+
+	.btn-primary:not(.btn-modal-apply):not(#btnAddLead):active 
+	{
+		transform: translateY(0) !important;
+	}
+
+	.btn-primary:not(.btn-modal-apply):not(#btnAddLead):disabled 
+	{
+		opacity: 0.6;
+		cursor: not-allowed;
+			}
+
+		.back-button 
+		{
+			display: inline-flex;
+			align-items: center;
+			gap: 8px;
+			padding: 6px 12px;
+			background: white;
+			border: none;
+			border-radius: 8px;
+			cursor: pointer;
+			text-decoration: none;
+			color: #0066ff;
+			font-weight: 600;
+			font-size: 15px;
+			transition: all 0.2s;
+			margin-right: 12px;
+		}
+
+		.back-button:hover 
+		{
+			background: #f0f5ff;
+			text-decoration: none;
+			color: #0066ff;
+			transform: translateX(-2px);
+		}
+
+		.back-icon 
+		{
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			background: #d1d5db;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 12px;
+			color: white;
+		}
+
+		.back-button:hover .back-icon 
+		{
+			background: #9ca3af;
+		}
+
+		/* Mobile Responsive Styles */
+		@media (max-width: 767px) {
+			.app-header {
+				padding: 8px 0 !important;
+			}
+
+			.title {
+				font-size: 0.9rem;
+			}
+
+			.back-button {
+				padding: 4px 8px;
+				font-size: 13px;
+				margin-right: 8px;
+			}
+
+			.back-icon {
+				width: 20px;
+				height: 20px;
+				font-size: 11px;
+			}
+
+			.input-group {
+				max-width: 100% !important;
+				margin-bottom: 10px;
+			}
+
+			.card-body {
+				padding: 1rem !important;
+			}
+
+			.d-flex.flex-wrap {
+				flex-direction: column !important;
+			}
+
+			.mr-2 {
+				margin-right: 0 !important;
+			}
+
+			.ml-2 {
+				margin-left: 0 !important;
+			}
+
+			.btn {
+				width: 100%;
+				margin-bottom: 8px;
+			}
+
+			.fab {
+				width: 48px;
+				height: 48px;
+				font-size: 20px;
+			}
+
+			.lead-card {
+				padding: 0.75rem !important;
+			}
+
+			.avatar {
+				width: 32px;
+				height: 32px;
+				font-size: 11px;
+			}
+
+			.modal-dialog {
+				margin: 10px;
+			}
+
+			.modal-body {
+				max-height: 60vh !important;
+				padding: 1rem !important;
+			}
+
+			/* Better button layout on mobile */
+			.lead-card .d-flex.flex-wrap {
+				flex-direction: column !important;
+				gap: 8px !important;
+			}
+
+			.lead-card .btn {
+				width: 100%;
+				margin-bottom: 0;
+			}
+
+			.lead-card .ml-auto {
+				margin-left: 0 !important;
+			}
+		}
+
+		@media (max-width: 576px) {
+			.title {
+				font-size: 0.85rem;
+			}
+
+			.back-button {
+				padding: 3px 6px;
+				font-size: 12px;
+			}
+
+			.card-body {
+				padding: 0.75rem !important;
+			}
+
+			.btn {
+				padding: 6px 12px;
+				font-size: 0.85rem;
+			}
+
+			.modal-dialog {
+				margin: 5px;
+			}
+
+			.modal-body {
+				padding: 0.75rem !important;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="app-header py-2">
+		<div class="container d-flex align-items-center">
+			<button class="back-button" onclick="goBack()">
+				<div class="back-icon">←</div>
+				<span>Back</span>
+			</button>
+			<h5 class="title mb-0">Leads — Rajesh Mirchandani - All Leads</h5>
+			<div class="ml-auto small text-muted" style="display: none;">Converted from Android fragment</div>
+		</div>
+	</div>
+
+	<div id="banner" class="alert alert-warning text-center rounded-0 mb-0">
+		No internet connection.
+	</div>
+
+	<div class="container my-3">
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<div class="d-flex flex-wrap align-items-center gap-2">
+					<div class="input-group mr-2" style="max-width:340px;">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><span class="fas fa-search"></span>🔎</span>
+						</div>
+						<input id="searchInput" class="form-control" placeholder="Search by lead name or address" oninput="onSearchInput(this.value)" />
+					</div>
+
+					<button id="btnFilter" class="btn btn-outline-secondary btn-filter mr-2" onclick="openFilterModal()">Filter</button>
+					<button id="ivFilterRefresh" class="btn btn-link btn-filter-refresh" onclick="clearFilter()">Clear filter</button>
+
+					<div class="ml-auto">
+						<span id="tvLeadCount" class="badge badge-pill badge-primary" style="display: none;">0 Lead</span>
+						<button id="btnAddLead" class="btn btn-primary ml-2" onclick="goAddLead()">Add Lead</button>
+					</div>
+				</div>
+
+				<div class="mt-3">
+					<div id="tvNoLead" class="empty" style="display:none;">No leads to show</div>
+					<div id="leadList"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Lead Details Modal (LeadHistoryActivity analog) -->
+	<div class="modal fade" id="leadModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-header-gradient text-white">
+					<h5 class="modal-title" id="leadModalTitle"><i class="fas fa-info-circle"></i> Lead Details</h5>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+				</div>
+				<div class="modal-body" id="leadModalBody" style="max-height: 70vh; overflow-y: auto;"></div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-modal-cancel" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Filter Modal -->
+	<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header modal-header-gradient text-white">
+					<h5 class="modal-title">Filter Leads</h5>
+					<button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label>Created By (Lead Creator)</label>
+						<input id="filterCreatedBy" class="form-control" placeholder="e.g. Arijit" />
+					</div>
+					<div class="form-group">
+						<label>Spend Status</label>
+						<select id="filterStatus" class="form-control">
+							<option value="">Any</option>
+							<option value="S">S</option>
+							<option value="C">C</option>
+							<option value="L">L</option>
+							<option value="D">D</option>
+						</select>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-link btn-modal-cancel" data-dismiss="modal">Cancel</button>
+					<button id="applyFilter" class="btn btn-primary btn-modal-apply" onclick="applyFilterFromModal()">Apply</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<button class="fab" id="fabScrollTop" title="Top" onclick="scrollToTop()">↑</button>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		'use strict';
+
+	let personId = localStorage.getItem('USER_PERSON_ID') || '1';
+	let groupId = localStorage.getItem('USER_GROUP_ID') || '1';
+	let personType = 'Member'; 
+	let organizationId = 1;
+	let isNotSearched = true;
+	let deletePosition = -1;
+	let showAllLeads = false;
+
+	let leadList = [];
+	let filteredLeadList = [];
+	let resolvedLeadPersonId = null;   // PersonId resolved via getPersonTypeDetails ("Driver")
+
+		const setConnectivity = (isConnected) => 
+		{
+			document.getElementById('banner').style.display = isConnected ? 'none' : 'block';
+		};
+
+		setConnectivity(navigator.onLine);
+		window.addEventListener('online', () => setConnectivity(true));
+		window.addEventListener('offline', () => setConnectivity(false));
+
+		// ---- Cache helpers (Web replacement for databaseHandler & SharedPreferences) ----
+		const LS_KEY = 'lead_list_cache_v1';
+
+		const saveLeadListToPreference = (list) => 
+		{
+			localStorage.setItem(LS_KEY, JSON.stringify(list || []));
+		};
+
+		const loadLeadListFromPreference = () => 
+		{
+			try 
+			{ 
+				return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); 
+			}
+			catch (e) 
+			{ 
+				return []; 
+			}
+		};
+
+	// ---- Renderers (LeadsAdapter analog) ----
+	const renderList = (list) => 
+	{
+		const root = document.getElementById('leadList');
+		root.innerHTML = '';
+		if (!list || list.length === 0) 
+		{
+			document.getElementById('tvNoLead').style.display = 'block';
+			updateCount(0);
+			return;
+		}
+		document.getElementById('tvNoLead').style.display = 'none';
+		updateCount(list.length);
+
+		// Determine how many leads to show
+		const leadsToShow = showAllLeads ? list : list.slice(0, 1);
+
+		leadsToShow.forEach((lead, idx) => 
+		{
+			const card = document.createElement('div');
+			card.className = 'lead-card p-3';
+
+					const header = document.createElement('div');
+		header.className = 'd-flex align-items-center';
+
+		const avatar = document.createElement('div');
+		avatar.className = 'avatar mr-3';
+		// Extract initials from lead name (first letter of each word)
+		const words = (lead.leadName || 'Unnamed Lead').split(' ');
+		const initials = words.slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
+		avatar.textContent = initials || '?';
+
+		const titleBox = document.createElement('div');
+		titleBox.className = 'title-box';
+			const name = document.createElement('div');
+			name.className = 'name font-weight-bold d-flex align-items-center';
+			const nameText = document.createElement('span');
+			nameText.textContent = lead.leadName || 'Unnamed Lead';
+			const editBtn = document.createElement('button');
+			editBtn.className = 'btn btn-sm btn-link p-0 ml-2 btn-edit-lead';
+			editBtn.innerHTML = '<i class="fas fa-pen-to-square"></i> Edit';
+			editBtn.title = 'Edit lead';
+			editBtn.setAttribute('aria-label', 'Edit lead');
+			editBtn.onclick = () => handleEditLead(idx);
+			name.appendChild(nameText);
+			name.appendChild(editBtn);
+
+			const sub = document.createElement('div');
+			sub.className = 'sub text-muted';
+			sub.textContent = (lead.address || 'No address');
+
+					titleBox.appendChild(name);
+		titleBox.appendChild(sub);
+
+		const badge = document.createElement('span');
+		badge.className = 'ml-auto badge badge-soft';
+		badge.textContent = 'Spend: ' + (lead.spendStatus || '-');
+
+		header.appendChild(avatar);
+		header.appendChild(titleBox);
+		header.appendChild(badge);
+
+					const body = document.createElement('div');
+		body.className = 'mt-3 small text-muted';
+		body.style.lineHeight = '1.6';
+		body.innerHTML = `
+			<div class="mb-1"><i class="fas fa-calendar-alt text-primary mr-1"></i> Next: ${lead.nextAppointmentDate || '-'}</div>
+			<div class="mb-1"><i class="fas fa-users text-success mr-1"></i> Students: ${lead.noOfStudents || 0}</div>
+			<div><i class="fas fa-rupee-sign text-warning mr-1"></i> Quotation: ₹${lead.quotationAmount || 0}</div>
+		`;
+
+		const actions = document.createElement('div');
+		actions.className = 'mt-3 d-flex flex-wrap align-items-center';
+		actions.style.gap = '8px';
+		actions.innerHTML = `
+			<button class="btn btn-sm btn-outline-primary btn-add-activity" onclick="handleAddActivity(${idx})">Add Activity</button>
+			<button class="btn btn-sm btn-outline-secondary btn-call" onclick="handleCall(${idx})">Call</button>
+			<button class="btn btn-sm btn-outline-info btn-open" onclick="handleOpenLead(${idx})">Open</button>
+			<button class="btn btn-sm btn-outline-danger btn-delete ml-auto" onclick="handleDeleteLead(${idx})" style="Display: none;">Delete</button>
+		`;
+
+			card.appendChild(header);
+			card.appendChild(body);
+			card.appendChild(actions);
+
+			root.appendChild(card);
+		});
+
+		// Add "Show More" button if there are more leads and not all are shown
+		if (!showAllLeads && list.length > 1) 
+		{
+			const showMoreCard = document.createElement('div');
+			showMoreCard.className = 'lead-card';
+			showMoreCard.style.cursor = 'pointer';
+			showMoreCard.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+			showMoreCard.style.color = 'white';
+			showMoreCard.style.border = 'none';
+			showMoreCard.style.transition = 'transform 0.2s';
+			showMoreCard.style.padding = '12px 16px';
+			showMoreCard.onmouseover = () => 
+			{ 
+				showMoreCard.style.transform = 'scale(1.02)'; 
+			};
+
+			showMoreCard.onmouseout = () => 
+			{ 
+				showMoreCard.style.transform = 'scale(1)'; 
+			};
+
+			showMoreCard.onclick = () => 
+			{
+				showAllLeads = true;
+				renderList(list);
+			};
+
+			showMoreCard.innerHTML = `
+				<div class="d-flex align-items-center justify-content-center">
+					<i class="fas fa-chevron-down mr-2" style="font-size: 1.2rem;"></i>
+					<span class="font-weight-bold" style="font-size: 1rem;">View all ${list.length} leads</span>
+				</div>
+			`;
+			root.appendChild(showMoreCard);
+		}
+
+		// Add "Show Less" button if all leads are shown
+		if (showAllLeads && list.length > 1) 
+		{
+			const showLessCard = document.createElement('div');
+			showLessCard.className = 'lead-card';
+			showLessCard.style.cursor = 'pointer';
+			showLessCard.style.background = 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)';
+			showLessCard.style.color = 'white';
+			showLessCard.style.border = 'none';
+			showLessCard.style.transition = 'transform 0.2s';
+			showLessCard.style.padding = '12px 16px';
+			showLessCard.onmouseover = () => 
+			{ 
+				showLessCard.style.transform = 'scale(1.02)'; 
+			};
+
+			showLessCard.onmouseout = () => 
+			{ 
+				showLessCard.style.transform = 'scale(1)'; 
+			};
+
+			showLessCard.onclick = () => 
+			{
+				showAllLeads = false;
+				renderList(list);
+			};
+
+			showLessCard.innerHTML = `
+				<div class="d-flex align-items-center justify-content-center">
+					<i class="fas fa-chevron-up mr-2" style="font-size: 1.2rem;"></i>
+					<span class="font-weight-bold" style="font-size: 1rem;">Show Less</span>
+				</div>
+			`;
+			root.appendChild(showLessCard);
+		}
+	};
+
+		const updateCount = (n) => 
+		{
+			const el = document.getElementById('tvLeadCount');
+			el.textContent = `${n} ${n === 1 ? 'Lead' : 'Leads'}`;
+		};
+
+		// ---- Search & Filter handlers ----
+		const onSearchInput = (text) => 
+		{
+			const q = (text || '').trim().toLowerCase();
+			if (!q) 
+			{
+				resetSearch();
+				return;
+			}
+
+			filteredLeadList = leadList.filter(ld =>
+				(ld.leadName && ld.leadName.toLowerCase().includes(q)) ||
+				(ld.address && ld.address.toLowerCase().includes(q))
+			);
+			isNotSearched = false;
+			renderList(filteredLeadList);
+		};
+
+		const resetSearch = () => 
+		{
+			isNotSearched = true;
+			renderList(leadList);
+		};
+
+		const openFilterModal = () => 
+		{
+			$('#filterModal').modal('show');
+		};
+
+		const applyFilterFromModal = () => 
+		{
+			const createdBy = document.getElementById('filterCreatedBy').value;
+			const status = document.getElementById('filterStatus').value;
+			$('#filterModal').modal('hide');
+			
+			showAllLeads = false;
+			
+			if (status) 
+			{
+				loadLeadsForGroupDriver();
+			} 
+			else 
+			{
+				applyFilter(createdBy, status);
+			}
+		};
+
+		const scrollToTop = () => 
+		{
+			window.scrollTo(
+			{ 
+				top: 0, 
+				behavior: 'smooth' 
+			});
+		};
+
+		const applyFilter = (createdBy, status) => 
+		{
+			filteredLeadList = leadList.filter(ld => 
+			{
+				const byCreator = !createdBy || (ld.leadCreator || '').toLowerCase().includes(createdBy.toLowerCase());
+				const byStatus = !status || (ld.spendStatus || '').toUpperCase() === status.toUpperCase();
+				return byCreator && byStatus;
+			});
+
+			isNotSearched = false;
+			document.getElementById('ivFilterRefresh').style.display = 'inline-block';
+			renderList(filteredLeadList);
+		};
+
+		const clearFilter = () => 
+		{
+			document.getElementById('filterCreatedBy').value = '';
+			document.getElementById('filterStatus').value = '';
+			isNotSearched = true;
+			showAllLeads = false; 
+			document.getElementById('ivFilterRefresh').style.display = 'none';
+			loadLeadsForGroupDriver();
+		};
+
+		let selectedLeadForActivity = null;
+
+			const handleAddActivity = (position) => 
+	{
+		const ld = isNotSearched ? leadList[position] : filteredLeadList[position];
+		selectedLeadForActivity = ld;
+		
+		localStorage.setItem('SELECTED_LEAD_ID', ld.leadId || '');
+		localStorage.setItem('SELECTED_LEAD_NAME', ld.leadName || 'Unnamed Lead');
+		localStorage.setItem('SELECTED_LEAD_ADDRESS', ld.address || '');
+		
+		window.location.href = 'add_activity_html_js_bootstrap.html';
+	};
+
+		const handleCall = (position) => 
+		{
+			const ld = isNotSearched ? leadList[position] : filteredLeadList[position];
+			if (!ld.mobile) 
+			{ 
+				alert('No phone number'); return; 
+			}
+
+			window.location.href = `tel:${ld.mobile}`;
+		};
+
+		const handleOpenLead = (position) =>
+		{
+			const ld = isNotSearched ? leadList[position] : filteredLeadList[position];
+			document.getElementById('leadModalTitle').textContent = ld.leadName || 'Lead';
+			
+			const body = `
+				<div class="row">
+					<div class="col-md-6">
+						<h6 class="text-primary mb-3"><i class="fas fa-building"></i> School Information</h6>
+						<table class="table table-sm table-borderless">
+							<tr><td class="text-muted"><strong>School Name:</strong></td><td>${ld.leadName || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>School Type:</strong></td><td>${ld.schoolType || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>No. of Students:</strong></td><td>${ld.noOfStudents || '0'}</td></tr>
+							<tr><td class="text-muted"><strong>Address:</strong></td><td>${ld.address || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>City:</strong></td><td>${ld.city || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>State:</strong></td><td>${ld.state || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Country:</strong></td><td>${ld.country || '-'}</td></tr>
+						</table>
+					</div>
+					<div class="col-md-6">
+						<h6 class="text-success mb-3"><i class="fas fa-user"></i> Contact Information</h6>
+						<table class="table table-sm table-borderless">
+							<tr><td class="text-muted"><strong>Contact Person:</strong></td><td>${ld.schoolContactPerson || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Designation:</strong></td><td>${ld.designation || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Mobile:</strong></td><td>${ld.mobile || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Email:</strong></td><td>${ld.email || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Executive:</strong></td><td>${ld.executiveName || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Responsible Person:</strong></td><td>${ld.leadCreator || '-'}</td></tr>
+						</table>
+					</div>
+				</div>
+				
+				<hr>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<h6 class="text-info mb-3"><i class="fas fa-money-bill-wave"></i> Financial Details</h6>
+						<table class="table table-sm table-borderless">
+							<tr><td class="text-muted"><strong>Lumpsum Amount:</strong></td><td>₹${ld.quotationAmount || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Rs/Student/Month:</strong></td><td>₹${ld.rsStudentPerMonth || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Installation Charge:</strong></td><td>₹${ld.installationCharge || 0}</td></tr>
+							<tr><td class="text-muted"><strong>SMS Charge:</strong></td><td>₹${ld.smsCharge || 0}</td></tr>
+							<tr><td class="text-muted"><strong>SMS Free:</strong></td><td>${ld.smsFree || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Months Free:</strong></td><td>${ld.monthsFree || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Negotiated Amount:</strong></td><td>₹${ld.negotiatedAmount || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Bill Raised:</strong></td><td>₹${ld.billRaised || 0}</td></tr>
+							<tr><td class="text-muted"><strong>Payment Terms:</strong></td><td>${ld.payment || '-'}</td></tr>
+						</table>
+					</div>
+					<div class="col-md-6">
+						<h6 class="text-warning mb-3"><i class="fas fa-calendar-alt"></i> Dates & Timeline</h6>
+						<table class="table table-sm table-borderless">
+							<tr><td class="text-muted"><strong>Creation Date:</strong></td><td>${ld.leadCreationDate || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Next Appointment:</strong></td><td>${ld.nextAppointmentDate || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Quotation Date:</strong></td><td>${ld.quotationDate || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Done Date:</strong></td><td>${ld.doneDate || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Billing Start Date:</strong></td><td>${ld.billingStartDate || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Last Visited:</strong></td><td>${ld.lastActivityDate || '-'}</td></tr>
+						</table>
+					</div>
+				</div>
+				
+				<hr>
+				
+				<div class="row">
+					<div class="col-md-6">
+						<h6 class="text-secondary mb-3"><i class="fas fa-info-circle"></i> Additional Information</h6>
+						<table class="table table-sm table-borderless">
+							<tr><td class="text-muted"><strong>Source:</strong></td><td>${ld.source || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Source Details:</strong></td><td>${ld.sourceDetails || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Quoted By:</strong></td><td>${ld.quotedBy || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Quotation Stage:</strong></td><td>${ld.quotationStage || '-'}</td></tr>
+							<tr><td class="text-muted"><strong>Spend Status:</strong></td><td><span class="badge badge-primary">${ld.spendStatus || '-'}</span></td></tr>
+							<tr><td class="text-muted"><strong>OI:</strong></td><td>${ld.oi || '0'}</td></tr>
+						</table>
+					</div>
+					<div class="col-md-6">
+						<h6 class="text-dark mb-3"><i class="fas fa-sticky-note"></i> Notes & Remarks</h6>
+						<div class="p-3 bg-light rounded">
+							<p class="mb-0">${ld.remarks || 'No remarks'}</p>
+						</div>
+						<div class="mt-3">
+							<h6 class="text-dark mb-2"><i class="fas fa-map-marker-alt"></i> Location</h6>
+							<div class="small text-muted mb-2">
+								<strong>Latitude:</strong> ${ld.latitude || 0}<br>
+								<strong>Longitude:</strong> ${ld.longitude || 0}
+							</div>
+							<a class="btn btn-sm btn-outline-primary" target="_blank" href="https://www.google.com/maps?q=${ld.latitude || 0},${ld.longitude || 0}">
+								<i class="fas fa-map"></i> Open in Maps
+							</a>
+						</div>
+					</div>
+				</div>
+			`;
+			document.getElementById('leadModalBody').innerHTML = body;
+			$('#leadModal').modal('show');
+		};
+
+		const handleDeleteLead = (position) => 
+		{
+			const listRef = isNotSearched ? leadList : filteredLeadList;
+			if (!listRef[position]) return;
+			if (!confirm('Delete this lead?')) return;
+			const toDeleteId = listRef[position].leadId;
+
+			// remove from both arrays
+			leadList = leadList.filter(x => x.leadId !== toDeleteId);
+			filteredLeadList = filteredLeadList.filter(x => x.leadId !== toDeleteId);
+			saveLeadListToPreference(leadList);
+			renderList(isNotSearched ? leadList : filteredLeadList);
+		};
+
+		// ---- Data fetching parity ----
+		const fetchLeadListOffline = () => 
+		{
+			const offline = loadLeadListFromPreference();
+			leadList = offline;
+			if (leadList && leadList.length) 
+			{
+				renderList(leadList);
+			}
+		};
+
+		const createJSON = (params, values) => 
+		{
+			let pairs = [];
+			for (let i = 0; i < params.length; i++) 
+			{
+				pairs.push(encodeURIComponent(params[i]) + "=" + encodeURIComponent(values[i] == null ? "" : values[i]));
+			}
+			return pairs.join("&");
+		};
+
+		const promisingAjaxCall = (url, method, dataString, contentType) => 
+		{
+			return new Promise(function(resolve, reject) 
+			{
+				let xhr = new XMLHttpRequest();
+				xhr.open(method, url, true);
+				xhr.setRequestHeader("Content-Type", contentType || "application/x-www-form-urlencoded");
+				
+				xhr.onreadystatechange = function() 
+				{
+					if (xhr.readyState === 4) 
+					{
+						if (xhr.status >= 200 && xhr.status < 300) 
+						{
+							try 
+							{
+								let json = JSON.parse(xhr.responseText);
+								resolve(json);
+							} 
+							catch (e) 
+							{
+								resolve({ isOk: false, message: "Invalid JSON" });
+							}
+						} 
+						else 
+						{
+							reject(new Error("HTTP " + xhr.status));
+						}
+					}
+				};
+				
+				xhr.onerror = function() 
+				{
+					reject(new Error("Network error"));
+				};
+				
+				xhr.send(dataString);
+			});
+		};
+
+	const loadLeadsForGroupDriver = () =>
+	{
+		if (resolvedLeadPersonId != null)
+		{
+			fetchLeadListFromApi();
+			return;
+		}
+
+		const groupId = parseInt(localStorage.getItem('USER_GROUP_ID'));
+		const personType = 'Driver'; 
+		const ptUrl = "https://trakkerz.trakkerz.com/api/Reports/getPersonTypeDetails";
+		const ptBody = { GroupId: groupId, PersonType: personType };
+
+		promisingAjaxCall(ptUrl, "POST", JSON.stringify(ptBody), "application/json")
+			.then(function (ptRes)
+			{
+				if (ptRes && (ptRes.IsOk === true || ptRes.isOk === true)
+					&& Array.isArray(ptRes.ResponseObject) && ptRes.ResponseObject.length > 0)
+				{
+					const drivers = ptRes.ResponseObject.filter(function (p) { return p.PersonType === personType; });
+					const chosen = drivers.length > 0 ? drivers[0] : ptRes.ResponseObject[0];
+					resolvedLeadPersonId = chosen.PersonId;
+				}
+			})
+			.catch(function ()
+			{
+			})
+			.then(function ()
+			{
+				fetchLeadListFromApi();
+			});
+	};
+
+	const fetchLeadListFromApi = () =>
+	{
+		const url = "https://management.trakkerz.com/api/Reports/NewLeads";
+		
+		const today = new Date();
+		const tomorrow = new Date(today);
+		tomorrow.setDate(today.getDate() + 1);
+		const toDate = tomorrow.toISOString().split('T')[0]; 
+		const fromDate = '2017-10-01';
+		
+		const groupId = parseInt(localStorage.getItem('USER_GROUP_ID'));
+		const personId = (resolvedLeadPersonId != null && !isNaN(resolvedLeadPersonId))
+			? resolvedLeadPersonId
+			: parseInt(localStorage.getItem('USER_PERSON_ID'));
+		
+		const requestBody = {
+			PersonId: personId,
+			GroupId: groupId,
+			FromDate: fromDate,
+			ToDate: toDate
+		};
+		
+		document.getElementById('tvNoLead').style.display = 'none';
+		document.getElementById('leadList').innerHTML = '<div class="text-center p-3"><small class="text-muted">Loading leads...</small></div>';
+		
+		promisingAjaxCall(url, "POST", JSON.stringify(requestBody), "application/json")
+			.then(function (data) 
+			{
+				console.log('API Response:', data);
+				if (data && data.IsOk && data.ResponseObject && Array.isArray(data.ResponseObject)) 
+				{
+					leadList = data.ResponseObject.map(lead => ({
+						leadId: lead.LeadId || '',
+						leadName: lead.LeadName || 'Unnamed Lead',
+						address: lead.Address || '',
+						nextAppointmentDate: lead.NextAppointmentDate || '',
+						payment: lead.PaymentTerms || '-',
+						mobile: lead.ContactNumber || '',
+						spendStatus: lead.SPENDStatus || '',
+						image: lead.Image || '',
+						leadCreator: lead.LeadCreator || '',
+						quotationAmount: 0,
+						noOfStudents: '',
+						orderFormProvided: false,
+						latitude: '0',
+						longitude: '0',
+						lastActivityDate: lead.LastVisited || lead.LeadCreationDate || '',
+						schoolType: '',
+						designation: '',
+						email: '',
+						source: '',
+						sourceDetails: '',
+						quotedBy: '',
+						quotationDate: '',
+						quotationStage: '',
+						rsStudentPerMonth: 0,
+						installationCharge: lead.InstallationFee || 0,
+						smsCharge: 0,
+						smsFree: 0,
+						monthsFree: 0,
+						negotiatedAmount: 0,
+						remarks: lead.Remarks || '',
+						billRaised: 0,
+						country: '',
+						state: lead.State || '',
+						city: lead.City || '',
+						leadCreationDate: lead.LeadCreationDate || '',
+						doneDate: '',
+						oi: lead.OI || '0',
+						billingStartDate: lead.BillingStartDate || '',
+						schoolContactPerson: lead.SchoolContactPerson || '',
+						executiveName: ''
+					}));
+					
+					saveLeadListToPreference(leadList);
+					renderList(leadList);
+				} 
+				else 
+				{
+					console.error('API Error:', data.Message || 'Unknown error');
+					document.getElementById('leadList').innerHTML = '<div class="text-center p-3"><small class="text-danger">No Data Found</small></div>';
+				}
+			})
+			.catch(function (error) 
+			{
+				console.error('Fetch Error:', error);
+				document.getElementById('leadList').innerHTML = '<div class="text-center p-3"><small class="text-danger">Network error. Loading cached data...</small></div>';
+				setTimeout(function () 
+				{
+					fetchLeadListOffline();
+				}, 500);
+			});
+	};
+
+		// ---- Boot (onResume parity) ----
+		(() => 
+		{
+			fetchLeadListOffline();
+			if (navigator.onLine) 
+			{
+				loadLeadsForGroupDriver();
+			}
+		})();
+
+		// ---- Back button handler ----
+		const goBack = () =>
+		{
+			window.location.href = 'groups.html';
+		};
+
+		// ============================================================================
+		// NEW FUNCTIONS (Edit Lead navigation) - Subham
+		// Grouped here at the end for easier review. The Edit button wiring and the
+		// Add Lead button onclick (modifications) remain in place above.
+		// ============================================================================
+
+		// Open the Add Lead page, preserving the current group context.
+		const goAddLead = () =>
+		{
+			let target = 'add_lead_html_js_bootstrap.html';
+			const grp = new URLSearchParams(location.search).get('group');
+			if (grp) { target += `?group=${encodeURIComponent(grp)}`; }
+			window.location.href = target;
+		};
+
+		// Open the selected lead in the Add/Edit page, preserving the group context.
+		const handleEditLead = (position) =>
+		{
+			const ld = isNotSearched ? leadList[position] : filteredLeadList[position];
+			if (!ld || !ld.leadId)
+			{
+				alert('No lead id');
+				return;
+			}
+			let target = `add_lead_html_js_bootstrap.html?leadId=${encodeURIComponent(ld.leadId)}`;
+			const grp = new URLSearchParams(location.search).get('group');
+			if (grp) { target += `&group=${encodeURIComponent(grp)}`; }
+			window.location.href = target;
+		};
+	</script>
+
+	<script>
+		(() => 
+		{
+			try 
+			{
+				const params = new URLSearchParams(location.search);
+				const g = params.get('group');
+				if (g) 
+				{
+					const h = document.querySelector('.title');
+					if (h) 
+					{ 
+						h.textContent = `Leads — ${g}`; 
+					}
+				}
+			} 
+			catch (e) 
+			{ 
+				console.error('Error:', e);
+			}
+		})();
+	</script>
+
+</body>
+
+</html>

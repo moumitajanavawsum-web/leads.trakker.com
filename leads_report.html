@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Leads Report</title>
+	<link rel="icon" type="image/png" href="https://s3.ap-south-1.amazonaws.com/res.cloudinary-s3.two.vawsum.com/2156100/1763108283_6916e5bb3a620.png.webp" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+	<link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+	<style>
+		:root { --ink: #0f172a; --muted: #475569; --brand: #2563eb; --bg: #f8fafc; --border: #e2e8f0 }
+
+		body { background: var(--bg) }
+
+		.app-header {
+			position: sticky; top: 0; z-index: 10;
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			color: #fff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+		}
+		.title { font-weight: 700; color: #fff; letter-spacing: .5px; }
+
+		.back-button {
+			display: inline-flex; align-items: center; gap: 8px;
+			padding: 6px 12px; background: rgba(255, 255, 255, 0.2);
+			border: none; border-radius: 8px; cursor: pointer; text-decoration: none;
+			color: #fff; font-weight: 600; font-size: 15px; transition: all 0.2s; margin-right: 12px;
+		}
+		.back-button:hover { background: rgba(255, 255, 255, 0.3); text-decoration: none; color: #fff; transform: translateX(-2px); }
+		.back-icon {
+			width: 24px; height: 24px; border-radius: 50%;
+			background: rgba(255, 255, 255, 0.3);
+			display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fff;
+		}
+
+		.card { border-radius: 12px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+
+		.form-group label { font-weight: 600; color: #475569; margin-bottom: 8px; font-size: 0.9rem; }
+		.form-control:focus, .custom-select:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); }
+
+		.btn-primary {
+			background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+			border: none; color: white; font-weight: 600; transition: all 0.2s;
+		}
+		.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+		.btn-primary:active { transform: translateY(0); }
+		.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+		input[type="date"] { width: 100%; padding: 0.375rem 0.75rem; border: 1px solid #ced4da; border-radius: 0.25rem; font-size: 0.9rem; }
+		input[type="date"]:focus { border-color: #667eea; box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25); outline: none; }
+
+		#leadTableReport { font-size: 0.875rem; width: 100% !important; border-collapse: separate; border-spacing: 0; }
+		#leadTableReport thead { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+		#leadTableReport th { font-weight: 600; text-align: left; padding: 12px 16px; border-bottom: none; color: #fff; white-space: normal; word-wrap: break-word; }
+		#leadTableReport td { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; color: #1f2937; vertical-align: top; }
+		#leadTableReport tbody tr { background-color: #ffffff; }
+		#leadTableReport tbody tr:hover { background-color: #f8f9ff; }
+		#leadTableReport_wrapper { background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); width: 100%; }
+
+		/* ---- Responsive ---- */
+		@media (max-width: 767px) {
+			.app-header { padding: 8px 0 !important; }
+			.title { font-size: 0.95rem; }
+			.back-button { padding: 4px 8px; font-size: 13px; margin-right: 8px; }
+			.back-icon { width: 20px; height: 20px; font-size: 11px; }
+			.container.my-4 { margin-top: 1rem !important; margin-bottom: 1rem !important; }
+			.card-body { padding: 1rem !important; }
+			#leadTableReport { font-size: 0.8rem; }
+			#leadTableReport th, #leadTableReport td { padding: 8px 10px; }
+			#leadTableReport_wrapper, .dataTables_wrapper { overflow-x: auto; }
+		}
+		@media (max-width: 576px) {
+			.title { font-size: 0.85rem; }
+			.back-button span { display: none; }
+			.back-button { margin-right: 6px; }
+			.card-body { padding: 0.75rem !important; }
+			.btn-primary { font-size: 0.9rem; }
+		}
+	</style>
+</head>
+
+<body>
+	<div class="app-header py-2">
+		<div class="container d-flex align-items-center">
+			<button class="back-button" onclick="goBack()">
+				<div class="back-icon">&larr;</div>
+				<span>Back</span>
+			</button>
+			<h5 class="title mb-0">Leads Report</h5>
+		</div>
+	</div>
+
+	<div class="container my-4">
+		<div class="card shadow-sm">
+			<div class="card-body p-4">
+				<h6 class="mb-4 font-weight-bold">Select Filters</h6>
+
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<div class="form-group">
+							<label for="txtDate">Select Date <span class="text-danger">*</span></label>
+							<input type="date" id="txtDate" class="form-control" />
+						</div>
+					</div>
+				</div>
+
+				<button type="button" class="btn btn-primary btn-block" id="btnSubmit">Generate Report</button>
+
+				<div id="downloadExcel" class="mt-3"></div>
+
+				<div class="tableForLead mt-4">
+					<h6 class="border-bottom text-muted">Your Result will be shown here.</h6>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+	<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap4.min.js"></script>
+	<script>
+		'use strict';
+
+		// ---- Shared helpers (this project has no src/js/mainScript.js) ----
+		function createJSON(params, values) {
+			if (params.length !== values.length) return "";
+			var json = {};
+			for (var i = 0; i < params.length; ++i) json[params[i]] = values[i];
+			return JSON.stringify(json);
+		}
+
+		function ajaxCall(url, type, dataString, contentType, callBackMethod) {
+			$.ajax({
+				url: url, type: type, data: dataString, contentType: contentType,
+				success: function (data) {
+					if (typeof (callBackMethod) === "function") callBackMethod(data);
+				},
+				error: function (jqXHR, textStatus) { alert("Request failed: " + textStatus); }
+			});
+		}
+
+		function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
+			var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+			var CSV = '';
+			if (ShowLabel) {
+				var row = "";
+				for (var index in arrData[0]) row += index + ',';
+				row = row.slice(0, -1);
+				CSV += row + '\r\n';
+			}
+			for (var i = 0; i < arrData.length; i++) {
+				var row = "";
+				for (var index in arrData[i]) row += '"' + arrData[i][index] + '",';
+				CSV += row + '\r\n';
+			}
+			if (CSV == '') { alert("Invalid data"); return; }
+			var fileName = ReportTitle.replace(/ /g, "_");
+			var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+			var link = document.createElement("a");
+			link.href = uri; link.style = "visibility:hidden"; link.download = fileName + ".csv";
+			document.body.appendChild(link); link.click(); document.body.removeChild(link);
+		}
+
+		// ---- Page logic (Lead Report) ----
+		function _convertDate(str) {
+			var date = new Date(str);
+			var dd = date.getDate();
+			var mm = date.getMonth();
+			var yyyy = date.getFullYear();
+			return dd + "/" + mm + "/" + yyyy;
+		}
+
+		function goBack() { window.location.href = 'groups.html'; }
+
+		$(document).on("click", "#btnDownload", function () {
+			var data = localStorage.getItem("ExcelDownloadForLead");
+			JSONToCSVConvertor(data, "ExcelDownloadForLead", true);
+		});
+
+		$(document).on("click", "#btnSubmit", function () {
+			var selDate = $("#txtDate").val();
+			var featureName = "CREATED";
+
+			if (selDate == "") { alert("Please select Date"); return false; }
+			selDate = _convertDate(selDate);
+
+			var url = "https://management.trakkerz.com/api/Actions/FetchLeadDetailsByParams";
+			var params = ["FeatureName", "FeatureValue"];
+			var values = [featureName, selDate];
+
+			var dataString = createJSON(params, values);
+			var data = "{'LeadParams':[" + dataString + "]}";
+			ajaxCall(url, "POST", data, "application/json", leadSuccess);
+		});
+
+		function leadSuccess(res) {
+			if (res.IsOk) {
+				res = res.ResponseObject;
+				var html = '';
+				var excelDownload = [];
+
+				for (var i = 0; i < res.length; ++i) {
+					var activityTime = res[i].ActivityTime;
+					var city = res[i].City;
+					var contactNumber = res[i].ContactNumber;
+					var lead = res[i].Lead;
+					var leadCreator = res[i].LeadCreator;
+					var appointment = res[i].NextAppointmentDate;
+					var purpose = res[i].Purpose;
+					var schoolContactPerson = res[i].SchoolContactPerson;
+					var spendStatus = res[i].SPENDStatus;
+					var state = res[i].State;
+
+					switch (spendStatus) {
+						case 'S': spendStatus = "Suspecting"; break;
+						case 'P': spendStatus = "Prospecting"; break;
+						case 'E': spendStatus = "Expecting"; break;
+						case 'N': spendStatus = "Not Done"; break;
+						case 'D': spendStatus = "Done"; break;
+					}
+
+					var innerDetails = {};
+					innerDetails["Activity_Date"] = activityTime;
+					innerDetails["School_Name"] = lead;
+					innerDetails["Executive_Name"] = leadCreator;
+					innerDetails["School_Contact_Person"] = schoolContactPerson;
+					innerDetails["Contact_Number"] = contactNumber;
+					innerDetails["Status"] = spendStatus;
+					innerDetails["Next_appointment_date"] = appointment;
+					innerDetails["Purpose"] = purpose;
+					innerDetails["City"] = city;
+					innerDetails["State"] = state;
+					excelDownload[excelDownload.length] = innerDetails;
+
+					html += '<tr>' +
+						'<td>' + activityTime + '</td>' +
+						'<td>' + lead + '</td>' +
+						'<td>' + leadCreator + '</td>' +
+						'<td>' + schoolContactPerson + '</td>' +
+						'<td>' + contactNumber + '</td>' +
+						'<td>' + spendStatus + '</td>' +
+						'<td>' + appointment + '</td>' +
+						'<td>' + purpose + '</td>' +
+						'<td>' + city + '</td>' +
+						'<td>' + state + '</td>' +
+						'</tr>';
+				}
+
+				var tableData = '<table id="leadTableReport" class="table table-striped table-bordered table-responsive">' +
+					'<thead><tr>' +
+					'<th>Activity Date</th><th>School Name</th><th>Executive Name</th>' +
+					'<th>School Contact Person</th><th>Contact Number</th><th>Status</th>' +
+					'<th>Next Appointment Date</th><th>Purpose</th><th>City</th><th>State</th>' +
+					'</tr></thead><tbody id="leadTableRows"></tbody></table>';
+
+				var downloadButton = '<button type="button" class="btn btn-primary" id="btnDownload">Download Excel</button>';
+
+				$(".tableForLead").html(tableData);
+				$("#downloadExcel").html(downloadButton);
+				$("#leadTableRows").html(html);
+				$('#leadTableReport').DataTable();
+
+				localStorage.setItem("ExcelDownloadForLead", JSON.stringify(excelDownload));
+			} else {
+				alert("Sorry, No Records found.");
+				$(".tableForLead").html('<h6 class="border-bottom text-muted">Sorry, No Records found.</h6>');
+				$("#downloadExcel").html('');
+			}
+		}
+	</script>
+</body>
+
+</html>
